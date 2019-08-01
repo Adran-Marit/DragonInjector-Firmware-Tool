@@ -12,4 +12,5 @@ namespace DragonInjector_Firmware_Tool
     public partial class App : Application
     {
     }
+
 }

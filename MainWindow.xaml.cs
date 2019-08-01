@@ -2,6 +2,7 @@
 using System.Windows;
 using Microsoft.Win32;
 using System.Diagnostics;
+using System;
 
 namespace DragonInjector_Firmware_Tool
 {
@@ -11,21 +12,48 @@ namespace DragonInjector_Firmware_Tool
         string uf2ShortFile;
         readonly string defaultUF2File = Directory.GetCurrentDirectory() + "\\defaultpayload.uf2";
         readonly string bootloader = Directory.GetCurrentDirectory() + "\\defaultbootloader.uf2";
-
+        
         public MainWindow()
         {
             InitializeComponent();
+
             DriveInfo[] allDrives = DriveInfo.GetDrives();
             foreach (DriveInfo d in allDrives)
             {
-                if (d.VolumeLabel == "DRAGONBOOT")
+                if (d.IsReady == true)
                 {
-                    DriveBox.Items.Add(d.Name);
-                    OutputBox.Content += "\n\\:Found drive: " +  (d.Name).Replace(":\\","");
-                    OutputBox.ScrollToBottom();
+                    if (d.VolumeLabel == "DRAGONBOOT")
+                    {
+                        DriveBox.Items.Add(d.Name);
+                        OutputBox.Content += "\n\\:Found drive: " + (d.Name).Replace(":\\", "");
+                        OutputBox.ScrollToBottom();
+                    }
+                }
+                if (d.IsReady == false)
+                {
+                    //OutputBox.Content += "\n.No drives found";
+                    //OutputBox.ScrollToBottom();
                 }
             }
-            DriveBox.SelectedIndex = 0;
+        }
+
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            Exception theException = e.Exception;
+            string theErrorPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\GeneratorTestbedError.txt";
+            using (System.IO.TextWriter theTextWriter = new System.IO.StreamWriter(theErrorPath, true))
+            {
+                DateTime theNow = DateTime.Now;
+                theTextWriter.WriteLine("The error time: " + theNow.ToShortDateString() + " " + theNow.ToShortTimeString());
+                while (theException != null)
+                {
+                    theTextWriter.WriteLine("Exception: " + theException.ToString());
+                    theException = theException.InnerException;
+                }
+            }
+            MessageBox.Show("The program crashed.  A stack trace can be found at:\n" + theErrorPath);
+            e.Handled = true;
+            Application.Current.Shutdown();
         }
 
         private void DriveButton_Click(object sender, RoutedEventArgs e)
@@ -36,11 +64,19 @@ namespace DragonInjector_Firmware_Tool
             DriveInfo[] allDrives = DriveInfo.GetDrives();
             foreach (DriveInfo d in allDrives)
             {
-                if (d.VolumeLabel == "DRAGONBOOT")
+                if (d.IsReady == true)
                 {
-                    DriveBox.Items.Add(d.Name);
-                    OutputBox.Content += "\n\\:Found drive: " + (d.Name).Replace(":\\", "");
-                    OutputBox.ScrollToBottom();
+                    if (d.VolumeLabel == "DRAGONBOOT")
+                    {
+                        DriveBox.Items.Add(d.Name);
+                        OutputBox.Content += "\n\\:Found drive: " + (d.Name).Replace(":\\", "");
+                        OutputBox.ScrollToBottom();
+                    }
+                }
+                if (d.IsReady == false)
+                {
+                    //OutputBox.Content += "\n.No drives found";
+                    //OutputBox.ScrollToBottom();
                 }
             }
             DriveBox.SelectedIndex = selectedIndex;
@@ -187,4 +223,8 @@ Figure out how to pull firmware version
 Add "pressed" states to buttons
 Make check for updates actually, you know, check for updates
 Possibly add more verbose output
+Remove annoying border when drive list is empty
+Add output for no drive(s) selected and fix crash for it
+Add window title
+Fix output when no drives found and device not ready
 */
