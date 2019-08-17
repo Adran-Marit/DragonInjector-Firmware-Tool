@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using Octokit;
 using System.Text.RegularExpressions;
+using System.Net;
 
 namespace DragonInjector_Firmware_Tool
 {
@@ -11,8 +12,8 @@ namespace DragonInjector_Firmware_Tool
     {
         string uf2File;
         string uf2ShortFile;
-        readonly string defaultUF2File = Directory.GetCurrentDirectory() + "\\payloads\\defaultpayload.uf2";
-        readonly string bootloader = Directory.GetCurrentDirectory() + "\\payloads\\defaultbootloader.uf2";
+        readonly string defaultFirmware = Directory.GetCurrentDirectory() + "\\payloads\\defaultfirmware.uf2";
+        readonly string defaultBootloader = Directory.GetCurrentDirectory() + "\\payloads\\defaultbootloader.uf2";
         
         public MainWindow()
         {
@@ -44,18 +45,18 @@ namespace DragonInjector_Firmware_Tool
                 OutputBox.ScrollToBottom();
                 File.Copy(uf2File, dest, true);
             }
-            else if (DriveBox.SelectedItem != null && File.Exists(".\\payloads\\defaultpayload.uf2") && uf2File == null || DriveBox.Text == "Leave blank for DragonBoot")
+            else if (DriveBox.SelectedItem != null && File.Exists(".\\payloads\\defaultfirmware.uf2") && uf2File == null || DriveBox.Text == "Leave blank for DragonBoot")
             {
-                OutputBox.Content += "\n...Using default payload";
+                OutputBox.Content += "\n...Using default firmware";
                 OutputBox.ScrollToBottom();
                 string dest = DriveBox.SelectedItem.ToString() + "\\flash.uf2";
-                OutputBox.Content += "\n\\:Copying default payload to " + DriveBox.SelectedItem.ToString().Replace(":\\", "");
+                OutputBox.Content += "\n\\:Copying default firmware to " + DriveBox.SelectedItem.ToString().Replace(":\\", "");
                 OutputBox.ScrollToBottom();
-                File.Copy(defaultUF2File, dest, true);
+                File.Copy(defaultFirmware, dest, true);
             }
-            else if (!File.Exists(".\\payloads\\defaultpayload.uf2"))
+            else if (!File.Exists(".\\payloads\\defaultfirmware.uf2"))
             {
-                OutputBox.Content += "\n!Missing default payload in directory";
+                OutputBox.Content += "\n!Missing default firmware in directory";
                 OutputBox.ScrollToBottom();
             }
             else
@@ -82,9 +83,9 @@ namespace DragonInjector_Firmware_Tool
                 foreach (var item in DriveBox.Items)
                 {
                     string dest = item.ToString() + "\\flash.uf2";
-                    OutputBox.Content += "\n\\:Copying default payload to " + item.ToString().Replace(":\\", "");
+                    OutputBox.Content += "\n\\:Copying default firmware to " + item.ToString().Replace(":\\", "");
                     OutputBox.ScrollToBottom();
-                    File.Copy(defaultUF2File, dest, true);
+                    File.Copy(defaultFirmware, dest, true);
                 }
             }
         }
@@ -96,7 +97,7 @@ namespace DragonInjector_Firmware_Tool
                 string dest = DriveBox.SelectedItem.ToString() + "\\flash.uf2";
                 OutputBox.Content += "\n\\:Updating bootloader on " + DriveBox.SelectedItem.ToString().Replace(":\\", "");
                 OutputBox.ScrollToBottom();
-                File.Copy(bootloader, dest, true);
+                File.Copy(defaultBootloader, dest, true);
             }
             else if (!File.Exists(".\\payloads\\defaultbootloader.uf2"))
             {
@@ -117,7 +118,7 @@ namespace DragonInjector_Firmware_Tool
                 string dest = item.ToString() + "\\flash.uf2";
                 OutputBox.Content += "\n\\:Updating bootloader on " + (item.ToString()).Replace(":\\", "");
                 OutputBox.ScrollToBottom();
-                File.Copy(bootloader, dest, true);
+                File.Copy(defaultBootloader, dest, true);
             }
         }
 
@@ -162,24 +163,91 @@ namespace DragonInjector_Firmware_Tool
         {
             OutputBox.Content += "\n...Checking for updates";
             OutputBox.ScrollToBottom();
-            var regex = new Regex(@"\d*\.\d*");
+            var regexGIT = new Regex(@"\d*\.\d*");
+            Directory.CreateDirectory(".\\payloads");
+            var downloader = new WebClient();
 
             var githubFW = new GitHubClient(new ProductHeaderValue("Nothing"));
             var releasesFW = await githubFW.Repository.Release.GetAll("dragoninjector-project", "DragonInjector-Firmware");
             var releaseFW = releasesFW[0];
-            
-            string fwVersion = regex.Match(releaseFW.Name.ToString()).ToString();
+            string fwVersion = regexGIT.Match(releaseFW.Name.ToString()).ToString();
+            string urlFW = releaseFW.Assets[0].BrowserDownloadUrl.ToString();
             OutputBox.Content += "\n" + "Found firmware release: " + fwVersion;
             OutputBox.ScrollToBottom();
             LatestFirmwareVersionLabel.Text = fwVersion;
-            
+            if (File.Exists(".\\payloads\\defaultfirmware.uf2"))
+            {
+                StreamReader localFW = new System.IO.StreamReader(".\\payloads\\defaultfirmware.uf2");
+                string lineFW;
+                while ((lineFW = localFW.ReadLine()) != null)
+                {
+                    if (lineFW.Contains("DI_FW_"))
+                    {
+                        var regex = new Regex(@"DI_FW_\d*\.\d*");
+                        string version = (regex.Match(lineFW).ToString()).Replace("DI_FW_", "");
+                        if (version == fwVersion)
+                        {
+                            OutputBox.Content += "\n...Local firmware same as github version. Skipping";
+                            OutputBox.ScrollToBottom();
+                        }
+                        else
+                        {
+                            OutputBox.Content += "\n...Newer firmware found in github. Downloading";
+                            OutputBox.ScrollToBottom();
+                            downloader.DownloadFile(urlFW, ".\\payloads\\defaultfirmware.uf2");
+                        }
+                    }
+                }
+                localFW.Dispose();
+            }
+            else
+            {
+                OutputBox.Content += "\n...No local firmware found. Downloading";
+                OutputBox.ScrollToBottom();
+                downloader.DownloadFile(urlFW, ".\\payloads\\defaultfirmware.uf2");
+            }
+
             var githubBL = new GitHubClient(new ProductHeaderValue("Nothing"));
             var releasesBL = await githubBL.Repository.Release.GetAll("dragoninjector-project", "DragonInjector-Bootloader");
             var releaseBL = releasesBL[0];
-            string blVersion = regex.Match(releaseBL.Name.ToString()).ToString();
+            string blVersion = regexGIT.Match(releaseBL.Name.ToString()).ToString();
+            string urlBL = releaseBL.Assets[0].BrowserDownloadUrl.ToString();
             OutputBox.Content += "\n" + "Found bootloader release: " + blVersion;
             OutputBox.ScrollToBottom();
             LatestBootloaderVersionLabel.Text = blVersion;
+            if (File.Exists(".\\payloads\\defaultbootloader.uf2"))
+            {
+                StreamReader localBL = new System.IO.StreamReader(".\\payloads\\defaultbootloader.uf2");
+                string lineBL;
+                while ((lineBL = localBL.ReadLine()) != null)
+                {
+                    if (lineBL.Contains("DI_BL_"))
+                    {
+                        var regex = new Regex(@"DI_BL_\d*\.\d*");
+                        string version = (regex.Match(lineBL).ToString()).Replace("DI_BL_", "");
+                        if (version == blVersion)
+                        {
+                            OutputBox.Content += "\n...Local bootloader same as github version. Skipping";
+                            OutputBox.ScrollToBottom();
+                        }
+                        else
+                        {
+                            OutputBox.Content += "\n...Newer bootloader found in github. Downloading";
+                            OutputBox.ScrollToBottom();
+                            downloader.DownloadFile(urlBL, ".\\payloads\\defaultbootloader.uf2");
+                        }
+                    }
+                }
+                localBL.Dispose();
+            }
+            else
+            {
+                OutputBox.Content += "\n...No local bootloader found. Downloading";
+                OutputBox.ScrollToBottom();
+                downloader.DownloadFile(urlBL, ".\\payloads\\defaultbootloader.uf2");
+            }
+
+            downloader.Dispose();
         }
         
         private void GetDrives()
@@ -221,14 +289,14 @@ namespace DragonInjector_Firmware_Tool
             string selectedItem = (DriveBox.SelectedItem).ToString();
             StreamReader currentUF2 = new System.IO.StreamReader(selectedItem + "CURRENT.UF2");
 
-            string lineX;
+            string lineFW;
             int x = 0;
-            while ((lineX = currentUF2.ReadLine()) != null)
+            while ((lineFW = currentUF2.ReadLine()) != null)
             {
-                if (lineX.Contains("DI_FW_"))
+                if (lineFW.Contains("DI_FW_"))
                 {
                     var regex = new Regex(@"DI_FW_\d*\.\d*");
-                    string version = (regex.Match(lineX).ToString()).Replace("DI_FW_", "");
+                    string version = (regex.Match(lineFW).ToString()).Replace("DI_FW_", "");
                     FirmwareVersionLabel.Text = version;
                     OutputBox.Content += "\nFound firmware version: " + version;
                     OutputBox.ScrollToBottom();
@@ -242,14 +310,14 @@ namespace DragonInjector_Firmware_Tool
 
             currentUF2.DiscardBufferedData();
             currentUF2.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
-            string lineY;
+            string lineBL;
             int y = 0;
-            while ((lineY = currentUF2.ReadLine()) != null)
+            while ((lineBL = currentUF2.ReadLine()) != null)
             {
-                if (lineY.Contains("DI_BL_"))
+                if (lineBL.Contains("DI_BL_"))
                 {
                     var regex = new Regex(@"DI_BL_\d*\.\d*");
-                    string version = (regex.Match(lineY).ToString()).Replace("DI_BL_", "");
+                    string version = (regex.Match(lineBL).ToString()).Replace("DI_BL_", "");
                     BootloaderVersionLabel.Text = version;
                     OutputBox.Content += "\nFound bootloader version: " + version;
                     OutputBox.ScrollToBottom();
@@ -269,6 +337,4 @@ namespace DragonInjector_Firmware_Tool
 TODO:
 Add customization options = show boot logo, show path only, no visual feedback
 Add "pressed" states to buttons
-Create local json for versions and check against it on updates
-Check if default files exist on update and download if they do not
 */
