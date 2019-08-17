@@ -609,7 +609,7 @@
         <TextBlock Name="BootloaderLabel" HorizontalAlignment="Left" Margin="75,255,0,0" TextWrapping="Wrap" Text="Current Bootloader:" VerticalAlignment="Top" Foreground="White" Style="{StaticResource TextBlockStyle}"/>
         <TextBlock Name="BootloaderVersionLabel" HorizontalAlignment="Left" Margin="276,257,0,0" TextWrapping="Wrap" Opacity="0.6" VerticalAlignment="Top" Foreground="White" Style="{StaticResource TextBlockStyle}"/>
         <TextBlock Name="LatestBootloaderVersionLabel" HorizontalAlignment="Left" Margin="276,299,0,0" TextWrapping="Wrap" Opacity="0.6" VerticalAlignment="Top" Foreground="White" Style="{StaticResource TextBlockStyle}"/>
-        <TextBlock Name="FirmwareVersionLabel" HorizontalAlignment="Left" Margin="276,155,0,0" TextWrapping="Wrap" Opacity="0.6" VerticalAlignment="Top" Foreground="White" Style="{StaticResource TextBlockStyle}" Text="UNKNOWN"/>
+        <TextBlock Name="FirmwareVersionLabel" HorizontalAlignment="Left" Margin="276,155,0,0" TextWrapping="Wrap" Opacity="0.6" VerticalAlignment="Top" Foreground="White" Style="{StaticResource TextBlockStyle}"/>
         <TextBlock Name="LatestFirmwareVersionLabel" HorizontalAlignment="Left" Margin="276,196,0,0" TextWrapping="Wrap" Opacity = "0.6" VerticalAlignment="Top" Foreground="White" Style="{StaticResource TextBlockStyle}"/>
         <TextBlock Name="LatestBootloaderLabel" HorizontalAlignment="Left" Margin="90,297,0,0" TextWrapping="Wrap" Text="Latest Bootloader:" VerticalAlignment="Top" Foreground="White" Style="{StaticResource TextBlockStyle}"/>
         <Button Name="BootloaderButton" HorizontalAlignment="Left" Margin="507,266,0,0" VerticalAlignment="Top" Height="44" Width="230" Style="{StaticResource BootloaderStyle}" Click="BootloaderButton_Click"/>

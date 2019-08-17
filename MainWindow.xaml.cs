@@ -3,6 +3,7 @@ using System.Windows;
 using Microsoft.Win32;
 using System.Diagnostics;
 using Octokit;
+using System.Text.RegularExpressions;
 
 namespace DragonInjector_Firmware_Tool
 {
@@ -16,7 +17,7 @@ namespace DragonInjector_Firmware_Tool
         public MainWindow()
         {
             InitializeComponent();
-            GetDrives();            
+            GetDrives();
         }
 
         private void DriveButton_Click(object sender, RoutedEventArgs e)
@@ -144,23 +145,7 @@ namespace DragonInjector_Firmware_Tool
 
         private void DriveBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            try
-            {
-                string selectedItem = (DriveBox.SelectedItem).ToString();
-                StreamReader infoUF2 = new System.IO.StreamReader(selectedItem + "INFO_UF2.TXT");
-                string infoUF2Line = infoUF2.ReadLine();
-                if (infoUF2Line.Contains("DragonInjector UF2 Bootloader"))
-                {
-                    BootloaderVersionLabel.Text = (infoUF2Line.Replace("DragonInjector UF2 Bootloader ", ""));
-                }
-                else
-                {
-                    BootloaderVersionLabel.Text = "Custom";
-                }
-            }
-            catch
-            {
-            } 
+            GetDIVersions();
         }
 
         private void PayloadButton_Click(object sender, RoutedEventArgs e)
@@ -177,20 +162,24 @@ namespace DragonInjector_Firmware_Tool
         {
             OutputBox.Content += "\n...Checking for updates";
             OutputBox.ScrollToBottom();
+            var regex = new Regex(@"\d*\.\d*");
 
             var githubFW = new GitHubClient(new ProductHeaderValue("Nothing"));
             var releasesFW = await githubFW.Repository.Release.GetAll("dragoninjector-project", "DragonInjector-Firmware");
             var releaseFW = releasesFW[0];
-            OutputBox.Content += "\n" + "Found firmware release: " + releaseFW.Name.ToString();
+            
+            string fwVersion = regex.Match(releaseFW.Name.ToString()).ToString();
+            OutputBox.Content += "\n" + "Found firmware release: " + fwVersion;
             OutputBox.ScrollToBottom();
-            LatestFirmwareVersionLabel.Text = releaseFW.TagName.ToString();
+            LatestFirmwareVersionLabel.Text = fwVersion;
             
             var githubBL = new GitHubClient(new ProductHeaderValue("Nothing"));
             var releasesBL = await githubBL.Repository.Release.GetAll("dragoninjector-project", "DragonInjector-Bootloader");
             var releaseBL = releasesBL[0];
-            OutputBox.Content += "\n" + "Found bootloader release: " + releaseBL.Name.ToString();
+            string blVersion = regex.Match(releaseBL.Name.ToString()).ToString();
+            OutputBox.Content += "\n" + "Found bootloader release: " + blVersion;
             OutputBox.ScrollToBottom();
-            LatestBootloaderVersionLabel.Text = releaseBL.TagName.ToString();
+            LatestBootloaderVersionLabel.Text = blVersion;
         }
         
         private void GetDrives()
@@ -226,6 +215,53 @@ namespace DragonInjector_Firmware_Tool
             }
             DriveBox.SelectedIndex = selectedIndex;
         }
+
+        private void GetDIVersions()
+        {
+            string selectedItem = (DriveBox.SelectedItem).ToString();
+            StreamReader currentUF2 = new System.IO.StreamReader(selectedItem + "CURRENT.UF2");
+
+            string lineX;
+            int x = 0;
+            while ((lineX = currentUF2.ReadLine()) != null)
+            {
+                if (lineX.Contains("DI_FW_"))
+                {
+                    var regex = new Regex(@"DI_FW_\d*\.\d*");
+                    string version = (regex.Match(lineX).ToString()).Replace("DI_FW_", "");
+                    FirmwareVersionLabel.Text = version;
+                    OutputBox.Content += "\nFound firmware version: " + version;
+                    OutputBox.ScrollToBottom();
+                    x++;
+                }
+            }
+            if (x < 1)
+            {
+                FirmwareVersionLabel.Text = "Custom";
+            }
+
+            currentUF2.DiscardBufferedData();
+            currentUF2.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
+            string lineY;
+            int y = 0;
+            while ((lineY = currentUF2.ReadLine()) != null)
+            {
+                if (lineY.Contains("DI_BL_"))
+                {
+                    var regex = new Regex(@"DI_BL_\d*\.\d*");
+                    string version = (regex.Match(lineY).ToString()).Replace("DI_BL_", "");
+                    BootloaderVersionLabel.Text = version;
+                    OutputBox.Content += "\nFound bootloader version: " + version;
+                    OutputBox.ScrollToBottom();
+                    y++;
+                }
+            }
+            if (y < 1)
+            {
+                BootloaderVersionLabel.Text = "Custom";
+            }
+            currentUF2.Dispose();
+        }
     }
 }
 
@@ -233,7 +269,6 @@ namespace DragonInjector_Firmware_Tool
 TODO:
 Add customization options = show boot logo, show path only, no visual feedback
 Add "pressed" states to buttons
-Add UF2 version checking
-Create local json and check uf2 version on launch
+Create local json for versions and check against it on updates
 Check if default files exist on update and download if they do not
 */
