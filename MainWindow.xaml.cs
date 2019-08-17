@@ -14,6 +14,7 @@ namespace DragonInjector_Firmware_Tool
         string uf2ShortFile;
         readonly string defaultFirmware = Directory.GetCurrentDirectory() + "\\payloads\\defaultfirmware.uf2";
         readonly string defaultBootloader = Directory.GetCurrentDirectory() + "\\payloads\\defaultbootloader.uf2";
+        readonly string programVersion = "1.0";
         
         public MainWindow()
         {
@@ -167,12 +168,29 @@ namespace DragonInjector_Firmware_Tool
             Directory.CreateDirectory(".\\payloads");
             var downloader = new WebClient();
 
+            var githubProgram = new GitHubClient(new ProductHeaderValue("Nothing"));
+            var releasesProgram = await githubProgram.Repository.Release.GetAll("dragoninjector-project", "DragonInjector-UpdateTool");
+            var releaseProgram = releasesProgram[0];
+            string gitProgramVersion = regexGIT.Match(releaseProgram.Name.ToString()).ToString();
+            OutputBox.Content += "\nFound program release: " + gitProgramVersion;
+            OutputBox.ScrollToBottom();
+            if (gitProgramVersion == programVersion)
+            {
+                OutputBox.Content += "\nTool is the latest version";
+                OutputBox.ScrollToBottom();
+            }
+            else
+            {
+                OutputBox.Content += "\nTool is outdated!";
+                OutputBox.ScrollToBottom();
+            }
+
             var githubFW = new GitHubClient(new ProductHeaderValue("Nothing"));
             var releasesFW = await githubFW.Repository.Release.GetAll("dragoninjector-project", "DragonInjector-Firmware");
             var releaseFW = releasesFW[0];
             string fwVersion = regexGIT.Match(releaseFW.Name.ToString()).ToString();
             string urlFW = releaseFW.Assets[0].BrowserDownloadUrl.ToString();
-            OutputBox.Content += "\n" + "Found firmware release: " + fwVersion;
+            OutputBox.Content += "\nFound firmware release: " + fwVersion;
             OutputBox.ScrollToBottom();
             LatestFirmwareVersionLabel.Text = fwVersion;
             if (File.Exists(".\\payloads\\defaultfirmware.uf2"))
@@ -212,7 +230,7 @@ namespace DragonInjector_Firmware_Tool
             var releaseBL = releasesBL[0];
             string blVersion = regexGIT.Match(releaseBL.Name.ToString()).ToString();
             string urlBL = releaseBL.Assets[0].BrowserDownloadUrl.ToString();
-            OutputBox.Content += "\n" + "Found bootloader release: " + blVersion;
+            OutputBox.Content += "\nFound bootloader release: " + blVersion;
             OutputBox.ScrollToBottom();
             LatestBootloaderVersionLabel.Text = blVersion;
             if (File.Exists(".\\payloads\\defaultbootloader.uf2"))
@@ -246,7 +264,6 @@ namespace DragonInjector_Firmware_Tool
                 OutputBox.ScrollToBottom();
                 downloader.DownloadFile(urlBL, ".\\payloads\\defaultbootloader.uf2");
             }
-
             downloader.Dispose();
         }
         
