@@ -593,8 +593,8 @@
         <Image Name="GridBackground" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Width="919" Height="519" Source="{StaticResource GridPictureImg}"/>
         <Image Name="PayloadGroupPicture" HorizontalAlignment="Left" Margin="18,49,0,0" VerticalAlignment="Top" Width="890" Height="84" Source="{StaticResource PayloadGroupPictureImg}"/>
         <Image Name="FirmwareGroupPicture" HorizontalAlignment="Left" Margin="18,148,0,0" VerticalAlignment="Top" Width="890" Height="84" Source="{StaticResource FirmwareGroupPictureImg}"/>
-        <TextBlock Name="PayloadLabel" HorizontalAlignment="Left" Margin="107,62,0,0" TextWrapping="Wrap" Text="Custom Payload: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>
-        <TextBlock Name="DriveLabel" HorizontalAlignment="Left" Margin="56,101,0,0" TextWrapping="Wrap" Text="Select Dragoninjector: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>
+        <TextBlock Name="PayloadLabel" HorizontalAlignment="Left" Margin="138,60,0,0" TextWrapping="Wrap" Text="Custom UF2: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>
+        <TextBlock Name="DriveLabel" HorizontalAlignment="Left" Margin="56,99,0,0" TextWrapping="Wrap" Text="Select Dragoninjector: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>
         <Image Name="DriveBoxPicture" HorizontalAlignment="Left" Margin="276,95,0,0" VerticalAlignment="Top" Width="254" Height="31" Source="{StaticResource DriveBoxPictureImg}"/>
         <ComboBox Name="DriveBox" HorizontalAlignment="Left" Margin="276,95,0,0" VerticalAlignment="Top" Width="254" Height="31" Style="{StaticResource ComboBoxFlatStyle}" SelectionChanged="DriveBox_SelectionChanged"/>
         <TextBox Name="PayloadTextBox" HorizontalAlignment="Left" Margin="277,56,0,0" TextWrapping="Wrap" Text="Leave blank for DragonBoot" VerticalAlignment="Top" Width="254" Height="31" Style="{StaticResource TextBoxStyle}" PreviewMouseDown="PayloadTextBox_Click"/>

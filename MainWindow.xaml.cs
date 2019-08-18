@@ -172,7 +172,7 @@ namespace DragonInjector_Firmware_Tool
             var releasesProgram = await githubProgram.Repository.Release.GetAll("dragoninjector-project", "DragonInjector-UpdateTool");
             var releaseProgram = releasesProgram[0];
             string gitProgramVersion = regexGIT.Match(releaseProgram.Name.ToString()).ToString();
-            OutputBox.Content += "\nFound program release: " + gitProgramVersion;
+            OutputBox.Content += "\nFound program release on github: " + gitProgramVersion;
             OutputBox.ScrollToBottom();
             if (gitProgramVersion == programVersion)
             {
@@ -190,7 +190,7 @@ namespace DragonInjector_Firmware_Tool
             var releaseFW = releasesFW[0];
             string fwVersion = regexGIT.Match(releaseFW.Name.ToString()).ToString();
             string urlFW = releaseFW.Assets[0].BrowserDownloadUrl.ToString();
-            OutputBox.Content += "\nFound firmware release: " + fwVersion;
+            OutputBox.Content += "\nFound firmware release on github: " + fwVersion;
             OutputBox.ScrollToBottom();
             LatestFirmwareVersionLabel.Text = fwVersion;
             if (File.Exists(".\\payloads\\defaultfirmware.uf2"))
@@ -230,7 +230,7 @@ namespace DragonInjector_Firmware_Tool
             var releaseBL = releasesBL[0];
             string blVersion = regexGIT.Match(releaseBL.Name.ToString()).ToString();
             string urlBL = releaseBL.Assets[0].BrowserDownloadUrl.ToString();
-            OutputBox.Content += "\nFound bootloader release: " + blVersion;
+            OutputBox.Content += "\nFound bootloader release on github: " + blVersion;
             OutputBox.ScrollToBottom();
             LatestBootloaderVersionLabel.Text = blVersion;
             if (File.Exists(".\\payloads\\defaultbootloader.uf2"))
@@ -315,7 +315,7 @@ namespace DragonInjector_Firmware_Tool
                     var regex = new Regex(@"DI_FW_\d*\.\d*");
                     string version = (regex.Match(lineFW).ToString()).Replace("DI_FW_", "");
                     FirmwareVersionLabel.Text = version;
-                    OutputBox.Content += "\nFound firmware version: " + version;
+                    OutputBox.Content += "\nFound firmware version on DragonInjector: " + version;
                     OutputBox.ScrollToBottom();
                     x++;
                 }
@@ -336,7 +336,7 @@ namespace DragonInjector_Firmware_Tool
                     var regex = new Regex(@"DI_BL_\d*\.\d*");
                     string version = (regex.Match(lineBL).ToString()).Replace("DI_BL_", "");
                     BootloaderVersionLabel.Text = version;
-                    OutputBox.Content += "\nFound bootloader version: " + version;
+                    OutputBox.Content += "\nFound bootloader version on DragonInjector: " + version;
                     OutputBox.ScrollToBottom();
                     y++;
                 }
@@ -354,4 +354,5 @@ namespace DragonInjector_Firmware_Tool
 TODO:
 Add customization options = show boot logo, show path only, no visual feedback
 Add "pressed" states to buttons
+Add size limiter to custom payload @ 57,344 bytes
 */
