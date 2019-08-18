@@ -14,7 +14,7 @@ namespace DragonInjector_Firmware_Tool
         string uf2ShortFile;
         readonly string defaultFirmware = Directory.GetCurrentDirectory() + "\\payloads\\defaultfirmware.uf2";
         readonly string defaultBootloader = Directory.GetCurrentDirectory() + "\\payloads\\defaultbootloader.uf2";
-        readonly string programVersion = "1.01";
+        readonly string programVersion = "1.02";
         
         public MainWindow()
         {
@@ -172,9 +172,7 @@ namespace DragonInjector_Firmware_Tool
             var githubProgram = new GitHubClient(new ProductHeaderValue("Nothing"));
             var releasesProgram = await githubProgram.Repository.Release.GetAll("dragoninjector-project", "DragonInjector-UpdateTool");
             var releaseProgram = releasesProgram[0];
-            string gitProgramVersion = regexGIT.Match(releaseProgram.Name.ToString()).ToString();
-            OutputBox.Content += "\nFound program release on github: " + gitProgramVersion;
-            OutputBox.ScrollToBottom();
+            string gitProgramVersion = regexGIT.Match(releaseProgram.TagName.ToString()).ToString();
             if (gitProgramVersion == programVersion)
             {
                 OutputBox.Content += "\n.Tool is the latest version";
@@ -190,7 +188,7 @@ namespace DragonInjector_Firmware_Tool
             var githubFW = new GitHubClient(new ProductHeaderValue("Nothing"));
             var releasesFW = await githubFW.Repository.Release.GetAll("dragoninjector-project", "DragonInjector-Firmware");
             var releaseFW = releasesFW[0];
-            string fwVersion = regexGIT.Match(releaseFW.Name.ToString()).ToString();
+            string fwVersion = regexGIT.Match(releaseFW.TagName.ToString()).ToString();
             string urlFW = releaseFW.Assets[0].BrowserDownloadUrl.ToString();
             OutputBox.Content += "\nFound firmware release on github: " + fwVersion;
             OutputBox.ScrollToBottom();
@@ -230,7 +228,7 @@ namespace DragonInjector_Firmware_Tool
             var githubBL = new GitHubClient(new ProductHeaderValue("Nothing"));
             var releasesBL = await githubBL.Repository.Release.GetAll("dragoninjector-project", "DragonInjector-Bootloader");
             var releaseBL = releasesBL[0];
-            string blVersion = regexGIT.Match(releaseBL.Name.ToString()).ToString();
+            string blVersion = regexGIT.Match(releaseBL.TagName.ToString()).ToString();
             string urlBL = releaseBL.Assets[0].BrowserDownloadUrl.ToString();
             OutputBox.Content += "\nFound bootloader release on github: " + blVersion;
             OutputBox.ScrollToBottom();
@@ -321,7 +319,7 @@ namespace DragonInjector_Firmware_Tool
                     var regex = new Regex(@"DI_FW_\d*\.\d*");
                     string version = (regex.Match(lineFW).ToString()).Replace("DI_FW_", "");
                     FirmwareVersionLabel.Text = version;
-                    OutputBox.Content += "\nFound firmware version on DragonInjector: " + version;
+                    OutputBox.Content += "\nFound firmware version on DragonInjector (" + selectedItem.Replace("\\","") + "): " + version;
                     OutputBox.ScrollToBottom();
                     x++;
                 }
@@ -342,7 +340,7 @@ namespace DragonInjector_Firmware_Tool
                     var regex = new Regex(@"DI_BL_\d*\.\d*");
                     string version = (regex.Match(lineBL).ToString()).Replace("DI_BL_", "");
                     BootloaderVersionLabel.Text = version;
-                    OutputBox.Content += "\nFound bootloader version on DragonInjector: " + version;
+                    OutputBox.Content += "\nFound bootloader version on DragonInjector (" + selectedItem.Replace("\\", "") + "): " + version;
                     OutputBox.ScrollToBottom();
                     y++;
                 }

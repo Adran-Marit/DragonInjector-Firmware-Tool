@@ -142,5 +142,8 @@
     <Resource Include="resources\new_tool_available_normal_657_70.png" />
     <Resource Include="resources\new_tool_available_pressed_657_70.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\di_logo_hover_13_417.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
