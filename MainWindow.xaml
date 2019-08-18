@@ -14,7 +14,7 @@
         <ImageBrush x:Key="FlashAllButtonImg" ImageSource="resources\flash_all_normal_776_169.png"/>
         <ImageBrush x:Key="DriveButtonImg" ImageSource="resources\refresh_button_normal_538_56.png"/>
         <ImageBrush x:Key="PayloadButtonImg" ImageSource="resources\clear_button_normal.png"/>
-        <ImageBrush x:Key="CheckUpdateButtonImg" ImageSource="resources\check_for_updates_normal_657_70.png"/>
+        <ImageBrush x:Key="CheckUpdateButtonImg" ImageSource="resources\new_tool_available_normal_657_70.png"/>
         <ImageBrush x:Key="BootloaderButtonImg" ImageSource="resources\update_bootloader_normal_507_266.png"/>
         <ImageBrush x:Key="BootloaderAllButtonImg" ImageSource="resources\update_all_normal_754_266.png"/>
         <ImageBrush x:Key="CloseButtonImg" ImageSource="resources\exit_normal_855_0.png"/>
@@ -31,7 +31,7 @@
         <ImageBrush x:Key="FlashAllButtonHoverImg" ImageSource="resources\flash_all_hover_776_169.png"/>
         <ImageBrush x:Key="DriveButtonHoverImg" ImageSource="resources\refresh_button_hover_538_56.png"/>
         <ImageBrush x:Key="PayloadButtonHoverImg" ImageSource="resources\clear_button_hover.png"/>
-        <ImageBrush x:Key="CheckUpdateButtonHoverImg" ImageSource="resources\check_for_updates_hover_657_70.png"/>
+        <ImageBrush x:Key="CheckUpdateButtonHoverImg" ImageSource="resources\new_tool_available_hover_657_70.png"/>
         <ImageBrush x:Key="BootloaderButtonHoverImg" ImageSource="resources\update_bootloader_hover_507_266.png"/>
         <ImageBrush x:Key="BootloaderAllButtonHoverImg" ImageSource="resources\update_all_hover_754_266.png"/>
         <ImageBrush x:Key="CloseButtonHoverImg" ImageSource="resources\exit_hover_855_0.png"/>
@@ -617,7 +617,7 @@
         <Image Name="TitlePicture" HorizontalAlignment="Left" Margin="0,0,0,0" Height="35" VerticalAlignment="Top" Width="919" MouseDown="Drag_Click" Source="{StaticResource TitlePictureImg}"/>
         <TextBlock Name="TitleLabel" Margin="50,6,0,0" VerticalAlignment="Top" MouseDown="Drag_Click" Text="DragonInjector Firmware Tool" Style="{StaticResource TitleStyle}"/>
         <Button Name="CloseButton" HorizontalAlignment="Left" Margin="855,-1,0,0" VerticalAlignment="Top" Height="42" Width="64" BorderThickness="0" Style="{StaticResource CloseStyle}" Click="CloseButton_Click"/>
-        <Button Name="CheckUpdateButton" HorizontalAlignment="Left" Margin="657,70,0,0" VerticalAlignment="Top" Height="42" Width="232" BorderThickness="0" Style="{StaticResource CheckUpdatesStyle}" Click="CheckUpdateButton_Click"/>
+        <Button Name="CheckUpdateButton" HorizontalAlignment="Left" Margin="657,70,0,0" VerticalAlignment="Top" Height="42" Width="232" BorderThickness="0" Visibility="Hidden" Style="{StaticResource CheckUpdatesStyle}" Click="CheckUpdateButton_Click"/>
         <ScrollViewer Name="OutputBox" HorizontalAlignment="Left" Height="150" Margin="130,350,0,0" Content="...Starting DragonInjector Firmware Tool" VerticalAlignment="Top" Width="800" Style="{StaticResource OutputBoxStyle}"/>
         <Button Name="LogoButton" HorizontalAlignment="Left" Height="85" Margin="10,424,0,0" VerticalAlignment="Top" Width="109" BorderThickness="0" Style="{StaticResource LogoStyle}" Click="LogoButton_Click"/>
     </Grid>

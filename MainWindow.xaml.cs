@@ -14,12 +14,13 @@ namespace DragonInjector_Firmware_Tool
         string uf2ShortFile;
         readonly string defaultFirmware = Directory.GetCurrentDirectory() + "\\payloads\\defaultfirmware.uf2";
         readonly string defaultBootloader = Directory.GetCurrentDirectory() + "\\payloads\\defaultbootloader.uf2";
-        readonly string programVersion = "1.0";
+        readonly string programVersion = "0.9";
         
         public MainWindow()
         {
             InitializeComponent();
             GetDrives();
+            GetReleasesAsync();
         }
 
         private void DriveButton_Click(object sender, RoutedEventArgs e)
@@ -34,7 +35,7 @@ namespace DragonInjector_Firmware_Tool
 
         private void CheckUpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            GetReleasesAsync();
+            Process.Start("https://github.com/dragoninjector-project/DragonInjector-UpdateTool/releases/latest");
         }
 
         private void FlashButton_Click(object sender, RoutedEventArgs e)
@@ -183,6 +184,7 @@ namespace DragonInjector_Firmware_Tool
             {
                 OutputBox.Content += "\n!Tool is outdated";
                 OutputBox.ScrollToBottom();
+                CheckUpdateButton.Visibility = Visibility.Visible;
             }
 
             var githubFW = new GitHubClient(new ProductHeaderValue("Nothing"));
@@ -271,7 +273,6 @@ namespace DragonInjector_Firmware_Tool
         {
             OutputBox.Content += "\n...Scanning for drives";
             OutputBox.ScrollToBottom();
-            int selectedIndex = DriveBox.SelectedIndex;
             DriveBox.Items.Clear();
             DriveInfo[] allDrives = DriveInfo.GetDrives();
             int badDrive = 0;
@@ -297,13 +298,18 @@ namespace DragonInjector_Firmware_Tool
             {
                 OutputBox.Content += "\n.No drives found";
                 OutputBox.ScrollToBottom();
+                FirmwareVersionLabel.Text = "NONE";
+                BootloaderVersionLabel.Text = "NONE";
             }
-            DriveBox.SelectedIndex = selectedIndex;
+            else
+            {
+                DriveBox.SelectedIndex = 0;
+            }
         }
 
-        private void GetDIVersions()
+        private async System.Threading.Tasks.Task GetDIVersions()
         {
-            string selectedItem = (DriveBox.SelectedItem).ToString();
+            string selectedItem = DriveBox.SelectedItem.ToString();
             StreamReader currentUF2 = new System.IO.StreamReader(selectedItem + "CURRENT.UF2");
 
             string lineFW;
@@ -354,5 +360,4 @@ namespace DragonInjector_Firmware_Tool
 TODO:
 Add customization options = show boot logo, show path only, no visual feedback
 Add "pressed" states to buttons
-Add size limiter to custom payload @ 57,344 bytes
 */

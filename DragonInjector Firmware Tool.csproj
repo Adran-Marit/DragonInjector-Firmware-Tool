@@ -137,5 +137,10 @@
     <Resource Include="resources\update_bootloader_normal_507_266.png" />
     <Resource Include="resources\update_bootloader_pressed_507_266.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\new_tool_available_hover_657_70.png" />
+    <Resource Include="resources\new_tool_available_normal_657_70.png" />
+    <Resource Include="resources\new_tool_available_pressed_657_70.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
