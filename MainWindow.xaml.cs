@@ -176,12 +176,12 @@ namespace DragonInjector_Firmware_Tool
             OutputBox.ScrollToBottom();
             if (gitProgramVersion == programVersion)
             {
-                OutputBox.Content += "\nTool is the latest version";
+                OutputBox.Content += "\n.Tool is the latest version";
                 OutputBox.ScrollToBottom();
             }
             else
             {
-                OutputBox.Content += "\nTool is outdated!";
+                OutputBox.Content += "\n!Tool is outdated";
                 OutputBox.ScrollToBottom();
             }
 
