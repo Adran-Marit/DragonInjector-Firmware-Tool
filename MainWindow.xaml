@@ -616,7 +616,7 @@
         <Button Name="BootloaderButton" HorizontalAlignment="Left" Margin="507,266,0,0" VerticalAlignment="Top" Height="44" Width="230" Style="{StaticResource BootloaderStyle}" Click="BootloaderButton_Click"/>
         <Button Name="BootloaderAllButton" HorizontalAlignment="Left" Margin="754,266,0,0" VerticalAlignment="Top" Height="44" Width="135" Style="{StaticResource BootloaderAllStyle}" Click="BootloaderAllButton_Click"/>
         <Image Name="TitlePicture" HorizontalAlignment="Left" Margin="0,0,0,0" Height="35" VerticalAlignment="Top" Width="919" MouseDown="Drag_Click" Source="{StaticResource TitlePictureImg}"/>
-        <TextBlock Name="TitleLabel" Margin="50,6,0,0" VerticalAlignment="Top" MouseDown="Drag_Click" Text="DragonInjector Firmware Tool" Style="{StaticResource TitleStyle}"/>
+        <TextBlock Name="TitleLabel" Margin="50,6,0,0" VerticalAlignment="Top" MouseDown="Drag_Click" Style="{StaticResource TitleStyle}"/>
         <Button Name="CloseButton" HorizontalAlignment="Left" Margin="855,-1,0,0" VerticalAlignment="Top" Height="42" Width="64" BorderThickness="0" Style="{StaticResource CloseStyle}" Click="CloseButton_Click"/>
         <Button Name="CheckUpdateButton" HorizontalAlignment="Left" Margin="657,70,0,0" VerticalAlignment="Top" Height="42" Width="232" BorderThickness="0" Visibility="Hidden" Style="{StaticResource CheckUpdatesStyle}" Click="CheckUpdateButton_Click"/>
         <ScrollViewer Name="OutputBox" HorizontalAlignment="Left" Height="150" Margin="130,350,0,0" Content="...Starting DragonInjector Firmware Tool" VerticalAlignment="Top" Width="800" Style="{StaticResource OutputBoxStyle}"/>

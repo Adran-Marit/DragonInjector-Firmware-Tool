@@ -16,9 +16,11 @@ namespace DragonInjector_Firmware_Tool
         readonly string defaultBootloader = Directory.GetCurrentDirectory() + "\\payloads\\defaultbootloader.uf2";
         readonly string programVersion = "1.02";
         
+        
         public MainWindow()
         {
             InitializeComponent();
+            TitleLabel.Text = "DragonInjector Firmware Tool - v" + programVersion;
             GetDrives();
             GetReleasesAsync();
         }
@@ -140,8 +142,27 @@ namespace DragonInjector_Firmware_Tool
                     uf2ShortFile = (Path.GetFileName(filePath)).ToString();
                     uf2File = Path.GetFullPath(filePath).ToString();
                     PayloadTextBox.Text = uf2ShortFile;
-                    OutputBox.Content += "\nGot payload: " + (Path.GetFileName(filePath)).ToString();
+                    OutputBox.Content += "\nLoaded custom payload: " + (Path.GetFileName(filePath)).ToString();
                     OutputBox.ScrollToBottom();
+                    long fileLength = (new System.IO.FileInfo(filePath).Length) / 2;
+                    long maxLength = 57088;
+                    OutputBox.Content += "\nCustom payload size: " + fileLength + " bytes";
+                    OutputBox.ScrollToBottom();
+
+                    if (fileLength > maxLength)
+                    {
+                        
+                        OutputBox.Content += "\n...Payload too large, must be under " + maxLength + " bytes. Clearing custom payload";
+                        OutputBox.ScrollToBottom();
+                        PayloadTextBox.Text = "Too large, using default!";
+                        uf2File = null;
+                        uf2ShortFile = null;
+                    }
+                    else
+                    {
+                        OutputBox.Content += "\n.Custom payload size verified OK";
+                        OutputBox.ScrollToBottom();
+                    }
                 }
             }
         }
@@ -190,9 +211,9 @@ namespace DragonInjector_Firmware_Tool
             var releaseFW = releasesFW[0];
             string fwVersion = regexGIT.Match(releaseFW.TagName.ToString()).ToString();
             string urlFW = releaseFW.Assets[0].BrowserDownloadUrl.ToString();
-            OutputBox.Content += "\nFound firmware release on github: " + fwVersion;
+            OutputBox.Content += "\nFound firmware release on github: v" + fwVersion;
             OutputBox.ScrollToBottom();
-            LatestFirmwareVersionLabel.Text = fwVersion;
+            LatestFirmwareVersionLabel.Text = "v" + fwVersion;
             if (File.Exists(".\\payloads\\defaultfirmware.uf2"))
             {
                 StreamReader localFW = new System.IO.StreamReader(".\\payloads\\defaultfirmware.uf2");
@@ -230,9 +251,9 @@ namespace DragonInjector_Firmware_Tool
             var releaseBL = releasesBL[0];
             string blVersion = regexGIT.Match(releaseBL.TagName.ToString()).ToString();
             string urlBL = releaseBL.Assets[0].BrowserDownloadUrl.ToString();
-            OutputBox.Content += "\nFound bootloader release on github: " + blVersion;
+            OutputBox.Content += "\nFound bootloader release on github: v" + blVersion;
             OutputBox.ScrollToBottom();
-            LatestBootloaderVersionLabel.Text = blVersion;
+            LatestBootloaderVersionLabel.Text = "v" + blVersion;
             if (File.Exists(".\\payloads\\defaultbootloader.uf2"))
             {
                 StreamReader localBL = new System.IO.StreamReader(".\\payloads\\defaultbootloader.uf2");
@@ -318,8 +339,8 @@ namespace DragonInjector_Firmware_Tool
                 {
                     var regex = new Regex(@"DI_FW_\d*\.\d*");
                     string version = (regex.Match(lineFW).ToString()).Replace("DI_FW_", "");
-                    FirmwareVersionLabel.Text = version;
-                    OutputBox.Content += "\nFound firmware version on DragonInjector (" + selectedItem.Replace("\\","") + "): " + version;
+                    FirmwareVersionLabel.Text = "v" + version;
+                    OutputBox.Content += "\nFound firmware version on DragonInjector (" + selectedItem.Replace("\\","") + "): v" + version;
                     OutputBox.ScrollToBottom();
                     x++;
                 }
@@ -339,8 +360,8 @@ namespace DragonInjector_Firmware_Tool
                 {
                     var regex = new Regex(@"DI_BL_\d*\.\d*");
                     string version = (regex.Match(lineBL).ToString()).Replace("DI_BL_", "");
-                    BootloaderVersionLabel.Text = version;
-                    OutputBox.Content += "\nFound bootloader version on DragonInjector (" + selectedItem.Replace("\\", "") + "): " + version;
+                    BootloaderVersionLabel.Text = "v" + version;
+                    OutputBox.Content += "\nFound bootloader version on DragonInjector (" + selectedItem.Replace("\\", "") + "): v" + version;
                     OutputBox.ScrollToBottom();
                     y++;
                 }
