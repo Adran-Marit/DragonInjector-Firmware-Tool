@@ -14,7 +14,7 @@ namespace DragonInjector_Firmware_Tool
         string uf2ShortFile;
         readonly string defaultFirmware = Directory.GetCurrentDirectory() + "\\payloads\\defaultfirmware.uf2";
         readonly string defaultBootloader = Directory.GetCurrentDirectory() + "\\payloads\\defaultbootloader.uf2";
-        readonly string programVersion = "1.02";
+        readonly string programVersion = "1.03";
         
         
         public MainWindow()
