@@ -598,7 +598,7 @@
         <TextBlock Name="DriveLabel" HorizontalAlignment="Left" Margin="56,99,0,0" TextWrapping="Wrap" Text="Select Dragoninjector: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>
         <Image Name="DriveBoxPicture" HorizontalAlignment="Left" Margin="276,95,0,0" VerticalAlignment="Top" Width="254" Height="31" Source="{StaticResource DriveBoxPictureImg}"/>
         <ComboBox Name="DriveBox" HorizontalAlignment="Left" Margin="276,95,0,0" VerticalAlignment="Top" Width="254" Height="31" Style="{StaticResource ComboBoxFlatStyle}" SelectionChanged="DriveBox_SelectionChanged"/>
-        <TextBox Name="PayloadTextBox" HorizontalAlignment="Left" Margin="277,56,0,0" TextWrapping="Wrap" Text="Leave blank for DragonBoot" VerticalAlignment="Top" Width="254" Height="31" Style="{StaticResource TextBoxStyle}" PreviewMouseDown="PayloadTextBox_Click"/>
+        <TextBox Name="PayloadTextBox" HorizontalAlignment="Left" Margin="277,56,0,0" TextWrapping="Wrap" Text="DragonBoot (default)" VerticalAlignment="Top" Width="254" Height="31" Style="{StaticResource TextBoxStyle}" PreviewMouseDown="PayloadTextBox_Click"/>
         <Button Name="PayloadButton" HorizontalAlignment="Left" Margin="538,56,0,0" VerticalAlignment="Top" Width="31" Height="31" Style="{StaticResource PayloadStyle}" Click="PayloadButton_Click"/>
         <Button Name="DriveButton" HorizontalAlignment="Left" Margin="538,95,0,0" VerticalAlignment="Top" Width="31" Height="31" BorderThickness="0" Style="{StaticResource DriveStyle}" Click="DriveButton_Click"/>
         <TextBlock Name="FirmwareLabel" HorizontalAlignment="Left" Margin="88,153,0,0" TextWrapping="Wrap" Text="Current Firmware: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>

@@ -42,7 +42,7 @@ namespace DragonInjector_Firmware_Tool
 
         private void FlashButton_Click(object sender, RoutedEventArgs e)
         {
-            if (uf2File != null && DriveBox.Text != "Leave blank for DragonBoot" && DriveBox.SelectedItem != null)
+            if (uf2File != null && DriveBox.Text != "DragonBoot (default)" && DriveBox.SelectedItem != null)
             {
                 string dest = DriveBox.SelectedItem.ToString() + "\\flash.uf2";
                 OutputBox.Content += "\n\\:Copying " + uf2ShortFile + " to " + DriveBox.SelectedItem.ToString().Replace(":\\", "");
@@ -174,7 +174,12 @@ namespace DragonInjector_Firmware_Tool
 
         private void PayloadButton_Click(object sender, RoutedEventArgs e)
         {
-            PayloadTextBox.Clear();
+            if (PayloadTextBox.Text != "DragonBoot (default)")
+            {
+                PayloadTextBox.Text = "DragonBoot (default)";
+                OutputBox.Content += "\n...Using default firmware";
+                OutputBox.ScrollToBottom();
+            }
         }
 
         private void LogoButton_Click(object sender, RoutedEventArgs e)
