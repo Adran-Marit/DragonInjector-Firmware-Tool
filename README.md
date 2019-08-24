@@ -2,6 +2,8 @@
 
 This tool is for use with the DragonInjector payload injector.
 
+![Screenshot](screens/screenshot.png)
+
 # Usage
 1) Download the latest release, unzip and run DragonInjector Firmware Tool.exe
 2) Upon loading, the tool will check and download the latest bootloader and firmware from github if you dont have them.
