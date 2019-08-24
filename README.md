@@ -5,23 +5,23 @@ This tool is for use with the DragonInjector payload injector.
 ![Screenshot](screens/screenshot.png)
 
 # Usage
-1) Download the latest release, unzip and run DragonInjector Firmware Tool.exe
-2) Upon loading, the tool will check and download the latest bootloader and firmware from github if you dont have them.
+1) Download the latest release, unzip, and run DragonInjector Firmware Tool.exe
+2) Upon loading, the tool will check and download the latest bootloader and firmware from github if you don't have them.
 3) Insert your DragonInjector into your computer via USB-C adaptor or a USB-C port if you have one.
-4) Wait for the LED to turn blue.
+4) Wait for the LED to turn blue - approximately 5 seconds.
 5) Select your DragonInjector from the dropdown menu in the Firmware Tool
 6) From here you can update bootloader and firmware to the latest version by pressing flash firmware or update bootloader.
 
 #### Advanced Usage
-If you dont want the default firmware you can load a custom uf2 firmware by selecting it above the dragoninjector and then flashing it
-To return to the default firmware, restart the tool and press flash firmware
+If you don't want the default firmware you can load a custom uf2 firmware by selecting it above the DragonInjector and then flashing it.
+To return to the default firmware, press the X next to UF2 selection, then press flash firmware.
 
 ***!!! WARNING !!!***
 
 Untrusted custom UF2 files **might** brick your DragonInjector. The only way to recover from this is with a SWD Programmer.
-We take no liability if you do this. Please be safe if you are using the custom uf2 feature.
+We take no liability if you do this. Please be safe if you are using the custom UF2 feature.
 
-Update all and flash all are for if you have multiple DragonInjectors connected
+Note: Update all and flash all are for if you have multiple DragonInjectors connected.
 
 # Credits
 
@@ -31,7 +31,7 @@ Update all and flash all are for if you have multiple DragonInjectors connected
 
 **Jerome** - For developing the DragonInjector Firmware Tool based on the concept by Matinator.
 
-**The Fuzz** - For helping maintan the discord server.
+**The Fuzz** - For helping maintain the discord server.
 
 **The Testers** - For testing the products and providing valuable feedback.
 
