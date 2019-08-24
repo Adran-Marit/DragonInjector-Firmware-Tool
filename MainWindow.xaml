@@ -523,21 +523,24 @@
             <Setter Property="FontFamily" Value="resources\EurostileNextLTPro-Regular.ttf #Eurostile Next LT Pro"/>
         </Style>
 
+        <Color x:Key="TextBoxForeground">#FF808080</Color>
         <Style x:Key="TextBoxStyle" TargetType="TextBox">
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="Foreground" Value="Gray"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="{StaticResource PayloadBoxImg}"/>
             <Setter Property="FontFamily" Value="resources\EurostileNextLTPro-Regular.ttf #Eurostile Next LT Pro"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                            Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        <Border Background="{TemplateBinding Background}">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
                         </Border>
                         <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="Gray"/>
+                            </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="{StaticResource PayloadBoxHoverImg}"/>
                             </Trigger>
