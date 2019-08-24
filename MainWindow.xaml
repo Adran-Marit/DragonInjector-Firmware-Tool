@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DragonInjector_Firmware_Tool"
         mc:Ignorable="d"
         Name="Window" Title="DragonInjector Firmware Tool" Height="519" Width="919" Opacity="0.96" WindowStartupLocation="CenterScreen" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" ResizeMode="NoResize" AllowsTransparency="True" BorderThickness="2" BorderBrush="Black" WindowStyle="None">
     <Window.Resources>
@@ -21,12 +20,14 @@
         <ImageBrush x:Key="LogoButtonImg" ImageSource="resources\di_logo_13_417.png"/>
         <BitmapImage x:Key="TitlePictureImg" UriSource="resources\title_bar_0_0.png"/>
         <BitmapImage x:Key="GridPictureImg" UriSource="resources\background_0_0.png"/>
-        <BitmapImage x:Key="DriveBoxPictureImg" UriSource="resources\input_field_with_arrow_normal_277_56.png"/>
+        <ImageBrush x:Key="DriveBoxImg" ImageSource="resources\input_field_with_arrow_normal_277_56.png"/>
         <BitmapImage x:Key="PayloadGroupPictureImg" UriSource="resources\payload_group_background_18_49.png"/>
         <BitmapImage x:Key="FirmwareGroupPictureImg" UriSource="resources\firmware_group_background_18_148.png"/>
         <BitmapImage x:Key="BootloaderGroupPictureImg" UriSource="resources\bootloader_group_background_18_245.png"/>
         <BitmapImage x:Key="OutputGroupPictureImg" UriSource="resources\output_text_background_18_344.png"/>
 
+        <ImageBrush x:Key="DriveBoxHoverImg" ImageSource="resources\input_field_with_arrow_hover_277_56.png"/>
+        <ImageBrush x:Key="PayloadBoxHoverImg" ImageSource="resources\input_field_hover_277_56.png"/>
         <ImageBrush x:Key="FlashButtonHoverImg" ImageSource="resources\flash_firmware_hover_569_169.png"/>
         <ImageBrush x:Key="FlashAllButtonHoverImg" ImageSource="resources\flash_all_hover_776_169.png"/>
         <ImageBrush x:Key="DriveButtonHoverImg" ImageSource="resources\refresh_button_hover_538_56.png"/>
@@ -36,7 +37,12 @@
         <ImageBrush x:Key="BootloaderAllButtonHoverImg" ImageSource="resources\update_all_hover_754_266.png"/>
         <ImageBrush x:Key="CloseButtonHoverImg" ImageSource="resources\exit_hover_855_0.png"/>
         <ImageBrush x:Key="LogoButtonHoverImg" ImageSource="resources\di_logo_hover_13_417.png"/>
-        <BitmapImage x:Key="DriveBoxPictureHoverImg" UriSource="resources\input_field_with_arrow_hover_277_56.png"/>
+
+        <ImageBrush x:Key="FlashButtonPressedImg" ImageSource="resources\flash_firmware_pressed_569_169.png"/>
+        <ImageBrush x:Key="FlashAllButtonPressedImg" ImageSource="resources\flash_all_pressed_776_169.png"/>
+        <ImageBrush x:Key="BootloaderButtonPressedImg" ImageSource="resources\update_bootloader_pressed_507_266.png"/>
+        <ImageBrush x:Key="BootloaderAllButtonPressedImg" ImageSource="resources\update_all_pressed_754_266.png"/>
+        <ImageBrush x:Key="CheckUpdateButtonPressedImg" ImageSource="resources\new_tool_available_pressed_657_70.png"/>
 
         <!--This section is strictly nuance behaviors and styling for elements of some controls-->
         <Style x:Key="NoHover" TargetType="{x:Type Button}">
@@ -105,13 +111,14 @@
                     <ColumnDefinition />
                     <ColumnDefinition Width="16" />
                 </Grid.ColumnDefinitions>
-                <Border Grid.ColumnSpan="2" Name="Border" BorderBrush="Transparent" CornerRadius="0" BorderThickness="1, 1, 1, 1" Background="Transparent" />
+                <Border Grid.ColumnSpan="2" Name="Border" BorderBrush="Transparent" CornerRadius="0" BorderThickness="1, 1, 1, 1" Background="{StaticResource DriveBoxImg}" />
                 <Border Grid.Column="1" Margin="1, 1, 1, 1" BorderBrush="Transparent" Name="ButtonBorder" CornerRadius="0, 0, 0, 0" BorderThickness="0, 0, 0, 0" Background="Transparent" />
                 <Path x:Name="Arrow" Grid.Column="1" HorizontalAlignment="Center" Margin="1,-1,0,0" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z" Fill="Transparent"/>
             </Grid>
             <ControlTemplate.Triggers>
                 <Trigger Property="UIElement.IsMouseOver" Value="True">
                     <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="Transparent"/>
+                    <Setter Property="Background" TargetName="Border" Value="{StaticResource DriveBoxHoverImg}"/>
                     <Setter Property="Shape.Fill" TargetName="Arrow" Value="Transparent" />
                 </Trigger>
                 <Trigger Property="UIElement.IsMouseOver" Value="False">
@@ -120,6 +127,7 @@
                 </Trigger>
                 <Trigger Property="ToggleButton.IsChecked" Value="True">
                     <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="Transparent"/>
+                    <Setter Property="Background" TargetName="Border" Value="{StaticResource DriveBoxHoverImg}"/>
                     <Setter Property="Shape.Fill" TargetName="Arrow" Value="Transparent"/>
                 </Trigger>
                 <Trigger Property="UIElement.IsEnabled" Value="False">
@@ -144,6 +152,7 @@
                                 <Setter Property="Background" TargetName="myBorder" Value="DarkRed" />
                                 <Setter Property="Opacity" TargetName="myBorder" Value="0.7" />
                                 <Setter Property="Width" TargetName="myBorder" Value="255" />
+                                <Setter Property="Margin" TargetName="myBorder" Value="0,0.3,0,0"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -319,6 +328,9 @@
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="{StaticResource FlashButtonHoverImg}"/>
                             </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource FlashButtonPressedImg}"/>
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -338,6 +350,9 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="{StaticResource FlashAllButtonHoverImg}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource FlashAllButtonPressedImg}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -359,6 +374,9 @@
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="{StaticResource BootloaderButtonHoverImg}"/>
                             </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource BootloaderButtonPressedImg}"/>
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -379,6 +397,9 @@
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="{StaticResource BootloaderAllButtonHoverImg}"/>
                             </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource BootloaderAllButtonPressedImg}"/>
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -398,6 +419,9 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="{StaticResource CheckUpdateButtonHoverImg}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource CheckUpdateButtonPressedImg}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -505,6 +529,22 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="{StaticResource PayloadBoxImg}"/>
             <Setter Property="FontFamily" Value="resources\EurostileNextLTPro-Regular.ttf #Eurostile Next LT Pro"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                            Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PayloadBoxHoverImg}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!--These are the main styles to set values on controls where they are a bit more tricky-->
@@ -552,7 +592,6 @@
         <Style x:Key="ComboBoxFlatStyle"  TargetType="{x:Type ComboBox}">
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="FontFamily" Value="resources\EurostileNextLTPro-Regular.ttf #Eurostile Next LT Pro"/>
             <Setter Property="UIElement.SnapsToDevicePixels" Value="True"/>
             <Setter Property="FrameworkElement.OverridesDefaultStyle" Value="True"/>
@@ -571,13 +610,18 @@
                                 <TextBox.Template>
                                     <ControlTemplate TargetType="TextBox" >
                                         <Border Name="PART_ContentHost" Focusable="False" />
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource DriveBoxHoverImg}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </TextBox.Template>
                             </TextBox>
                             <Border Name="OutlineBoder" BorderBrush="Transparent" IsHitTestVisible="False" />
                             <Popup Name="PART_Popup" Placement="Bottom" Focusable="False" AllowsTransparency="True" IsOpen="{TemplateBinding ComboBox.IsDropDownOpen}" PopupAnimation="Slide">
                                 <Grid Name="DropDown" SnapsToDevicePixels="True" >
-                                    <Border Name="DropDownBorder" Background="Black" Margin="0, 1, 0, 0" CornerRadius="0" BorderThickness="0,0,0,0" BorderBrush="Black" Opacity="0.9"/>
+                                    <Border Name="DropDownBorder" Background="Black" Margin="0, 0, 0, 0" CornerRadius="0" BorderThickness="0,0,0,0" BorderBrush="Black" Opacity="0.9"/>
                                     <ScrollViewer Margin="0,0,0,0" SnapsToDevicePixels="True" Width="255">
                                         <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
                                     </ScrollViewer>
@@ -596,7 +640,6 @@
         <Image Name="FirmwareGroupPicture" HorizontalAlignment="Left" Margin="18,148,0,0" VerticalAlignment="Top" Width="890" Height="84" Source="{StaticResource FirmwareGroupPictureImg}"/>
         <TextBlock Name="PayloadLabel" HorizontalAlignment="Left" Margin="138,60,0,0" TextWrapping="Wrap" Text="Custom UF2: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>
         <TextBlock Name="DriveLabel" HorizontalAlignment="Left" Margin="56,99,0,0" TextWrapping="Wrap" Text="Select Dragoninjector: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>
-        <Image Name="DriveBoxPicture" HorizontalAlignment="Left" Margin="276,95,0,0" VerticalAlignment="Top" Width="254" Height="31" Source="{StaticResource DriveBoxPictureImg}"/>
         <ComboBox Name="DriveBox" HorizontalAlignment="Left" Margin="276,95,0,0" VerticalAlignment="Top" Width="254" Height="31" Style="{StaticResource ComboBoxFlatStyle}" SelectionChanged="DriveBox_SelectionChanged"/>
         <TextBox Name="PayloadTextBox" HorizontalAlignment="Left" Margin="277,56,0,0" TextWrapping="Wrap" Text="DragonBoot (default)" VerticalAlignment="Top" Width="254" Height="31" Style="{StaticResource TextBoxStyle}" PreviewMouseDown="PayloadTextBox_Click"/>
         <Button Name="PayloadButton" HorizontalAlignment="Left" Margin="538,56,0,0" VerticalAlignment="Top" Width="31" Height="31" Style="{StaticResource PayloadStyle}" Click="PayloadButton_Click"/>

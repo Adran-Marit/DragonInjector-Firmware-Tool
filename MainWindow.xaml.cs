@@ -14,7 +14,7 @@ namespace DragonInjector_Firmware_Tool
         string uf2ShortFile;
         readonly string defaultFirmware = Directory.GetCurrentDirectory() + "\\payloads\\defaultfirmware.uf2";
         readonly string defaultBootloader = Directory.GetCurrentDirectory() + "\\payloads\\defaultbootloader.uf2";
-        readonly string programVersion = "1.03";
+        readonly string programVersion = "1.10";
         
         
         public MainWindow()
@@ -199,16 +199,16 @@ namespace DragonInjector_Firmware_Tool
             var releasesProgram = await githubProgram.Repository.Release.GetAll("dragoninjector-project", "DragonInjector-UpdateTool");
             var releaseProgram = releasesProgram[0];
             string gitProgramVersion = regexGIT.Match(releaseProgram.TagName.ToString()).ToString();
-            if (gitProgramVersion == programVersion)
-            {
-                OutputBox.Content += "\n.Tool is the latest version";
-                OutputBox.ScrollToBottom();
-            }
-            else
+            if (gitProgramVersion != programVersion)
             {
                 OutputBox.Content += "\n!Tool is outdated";
                 OutputBox.ScrollToBottom();
                 CheckUpdateButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                OutputBox.Content += "\n.Tool is the latest version";
+                OutputBox.ScrollToBottom();
             }
 
             var githubFW = new GitHubClient(new ProductHeaderValue("Nothing"));
@@ -379,9 +379,3 @@ namespace DragonInjector_Firmware_Tool
         }
     }
 }
-
-/*
-TODO:
-Add customization options = show boot logo, show path only, no visual feedback
-Add "pressed" states to buttons
-*/
