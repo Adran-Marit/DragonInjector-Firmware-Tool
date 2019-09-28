@@ -14,7 +14,7 @@ namespace DragonInjector_Firmware_Tool
         string uf2ShortFile;
         readonly string defaultFirmware = Directory.GetCurrentDirectory() + "\\payloads\\defaultfirmware.uf2";
         readonly string defaultBootloader = Directory.GetCurrentDirectory() + "\\payloads\\defaultbootloader.uf2";
-        readonly string programVersion = "1.10";
+        readonly string programVersion = "1.11";
         
         
         public MainWindow()
@@ -231,11 +231,13 @@ namespace DragonInjector_Firmware_Tool
                         string version = (regex.Match(lineFW).ToString()).Replace("DI_FW_", "");
                         if (version == fwVersion)
                         {
+                            localFW.ReadToEnd();
                             OutputBox.Content += "\n...Local firmware same as github version. Skipping";
                             OutputBox.ScrollToBottom();
                         }
                         else
                         {
+                            localFW.ReadToEnd();
                             OutputBox.Content += "\n...Newer firmware found in github. Downloading";
                             OutputBox.ScrollToBottom();
                             downloader.DownloadFile(urlFW, ".\\payloads\\defaultfirmware.uf2");
@@ -271,11 +273,13 @@ namespace DragonInjector_Firmware_Tool
                         string version = (regex.Match(lineBL).ToString()).Replace("DI_BL_", "");
                         if (version == blVersion)
                         {
+                            localBL.ReadToEnd();
                             OutputBox.Content += "\n...Local bootloader same as github version. Skipping";
                             OutputBox.ScrollToBottom();
                         }
                         else
                         {
+                            localBL.ReadToEnd();
                             OutputBox.Content += "\n...Newer bootloader found in github. Downloading";
                             OutputBox.ScrollToBottom();
                             downloader.DownloadFile(urlBL, ".\\payloads\\defaultbootloader.uf2");
@@ -334,48 +338,68 @@ namespace DragonInjector_Firmware_Tool
         private async System.Threading.Tasks.Task GetDIVersions()
         {
             string selectedItem = DriveBox.SelectedItem.ToString();
-            StreamReader currentUF2 = new System.IO.StreamReader(selectedItem + "CURRENT.UF2");
+            if (File.Exists(selectedItem + "CURRENT.UF2"))
+            {
+                StreamReader currentUF2 = new System.IO.StreamReader(selectedItem + "CURRENT.UF2");
 
-            string lineFW;
-            int x = 0;
-            while ((lineFW = currentUF2.ReadLine()) != null)
-            {
-                if (lineFW.Contains("DI_FW_"))
+                string lineFW;
+                int x = 0;
+                while ((lineFW = currentUF2.ReadLine()) != null)
                 {
-                    var regex = new Regex(@"DI_FW_\d*\.\d*");
-                    string version = (regex.Match(lineFW).ToString()).Replace("DI_FW_", "");
-                    FirmwareVersionLabel.Text = "v" + version;
-                    OutputBox.Content += "\nFound firmware version on DragonInjector (" + selectedItem.Replace("\\","") + "): v" + version;
-                    OutputBox.ScrollToBottom();
-                    x++;
+                    if (lineFW.Contains("DI_FW_"))
+                    {
+                        var regex = new Regex(@"DI_FW_\d*\.\d*");
+                        string version = (regex.Match(lineFW).ToString()).Replace("DI_FW_", "");
+                        FirmwareVersionLabel.Text = "v" + version;
+                        OutputBox.Content += "\nFound firmware version on DragonInjector (" + selectedItem.Replace("\\", "") + "): v" + version;
+                        OutputBox.ScrollToBottom();
+                        x++;
+                    }
                 }
-            }
-            if (x < 1)
-            {
-                FirmwareVersionLabel.Text = "Custom";
-            }
+                if (x < 1)
+                {
+                    FirmwareVersionLabel.Text = "Custom";
+                }
 
-            currentUF2.DiscardBufferedData();
-            currentUF2.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
-            string lineBL;
-            int y = 0;
-            while ((lineBL = currentUF2.ReadLine()) != null)
-            {
-                if (lineBL.Contains("DI_BL_"))
+                currentUF2.DiscardBufferedData();
+                currentUF2.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
+                string lineBL;
+                int y = 0;
+                while ((lineBL = currentUF2.ReadLine()) != null)
                 {
-                    var regex = new Regex(@"DI_BL_\d*\.\d*");
-                    string version = (regex.Match(lineBL).ToString()).Replace("DI_BL_", "");
-                    BootloaderVersionLabel.Text = "v" + version;
-                    OutputBox.Content += "\nFound bootloader version on DragonInjector (" + selectedItem.Replace("\\", "") + "): v" + version;
-                    OutputBox.ScrollToBottom();
-                    y++;
+                    if (lineBL.Contains("DI_BL_"))
+                    {
+                        var regex = new Regex(@"DI_BL_\d*\.\d*");
+                        string version = (regex.Match(lineBL).ToString()).Replace("DI_BL_", "");
+                        BootloaderVersionLabel.Text = "v" + version;
+                        OutputBox.Content += "\nFound bootloader version on DragonInjector (" + selectedItem.Replace("\\", "") + "): v" + version;
+                        OutputBox.ScrollToBottom();
+                        y++;
+                    }
                 }
+                if (y < 1)
+                {
+                    BootloaderVersionLabel.Text = "Custom";
+                }
+                currentUF2.Dispose();
             }
-            if (y < 1)
+            else
             {
-                BootloaderVersionLabel.Text = "Custom";
+                FirmwareVersionLabel.Text = "UNKNOWN";
+                OutputBox.Content += "\n!Couldn't find firmware version on DragonInjector";
+                OutputBox.ScrollToBottom();
+                BootloaderVersionLabel.Text = "UNKNOWN";
+                OutputBox.Content += "\n!Couldn't find bootloader version on DragonInjector";
+                OutputBox.ScrollToBottom();
             }
-            currentUF2.Dispose();
         }
     }
 }
+
+/*
+TODO:
+wont pickup new current bootloader version on flash or firmware - call getdiversions after flash?
+crash without error if selected drive no longer plugged in (like after flash) - pause after flash then get drives?
+make downloading more verbose
+make bootloader update firmware too
+*/
