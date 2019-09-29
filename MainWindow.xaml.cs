@@ -5,6 +5,8 @@ using System.Diagnostics;
 using Octokit;
 using System.Text.RegularExpressions;
 using System.Net;
+using System.Timers;
+using System.Threading.Tasks;
 
 namespace DragonInjector_Firmware_Tool
 {
@@ -14,8 +16,7 @@ namespace DragonInjector_Firmware_Tool
         string uf2ShortFile;
         readonly string defaultFirmware = Directory.GetCurrentDirectory() + "\\payloads\\defaultfirmware.uf2";
         readonly string defaultBootloader = Directory.GetCurrentDirectory() + "\\payloads\\defaultbootloader.uf2";
-        readonly string programVersion = "1.11";
-        
+        readonly string programVersion = "1.12";
         
         public MainWindow()
         {
@@ -23,6 +24,35 @@ namespace DragonInjector_Firmware_Tool
             TitleLabel.Text = "DragonInjector Firmware Tool - v" + programVersion;
             GetDrives();
             GetReleasesAsync();
+        }
+
+        async Task diDelay()
+        {
+            await Task.Delay(15000);
+        }
+
+        private void disableButtons()
+        {
+            FlashAllButton.IsEnabled = false;
+            FlashButton.IsEnabled = false;
+            BootloaderAllButton.IsEnabled = false;
+            BootloaderButton.IsEnabled = false;
+            PayloadButton.IsEnabled = false;
+            DriveButton.IsEnabled = false;
+            DriveBox.IsHitTestVisible = false;
+            PayloadTextBox.IsEnabled = false;
+        }
+
+        private void enableButtons()
+        {
+            FlashAllButton.IsEnabled = true;
+            FlashButton.IsEnabled = true;
+            BootloaderAllButton.IsEnabled = true;
+            BootloaderButton.IsEnabled = true;
+            PayloadButton.IsEnabled = true;
+            DriveButton.IsEnabled = true;
+            DriveBox.IsHitTestVisible = true;
+            PayloadTextBox.IsEnabled = true;
         }
 
         private void DriveButton_Click(object sender, RoutedEventArgs e)
@@ -40,23 +70,51 @@ namespace DragonInjector_Firmware_Tool
             Process.Start("https://github.com/dragoninjector-project/DragonInjector-UpdateTool/releases/latest");
         }
 
-        private void FlashButton_Click(object sender, RoutedEventArgs e)
+        private async void FlashButton_Click(object sender, RoutedEventArgs e)
         {
             if (uf2File != null && DriveBox.Text != "DragonBoot (default)" && DriveBox.SelectedItem != null)
             {
+                disableButtons();
                 string dest = DriveBox.SelectedItem.ToString() + "\\flash.uf2";
                 OutputBox.Content += "\n\\:Copying " + uf2ShortFile + " to " + DriveBox.SelectedItem.ToString().Replace(":\\", "");
                 OutputBox.ScrollToBottom();
-                File.Copy(uf2File, dest, true);
+                try
+                {
+                    File.Copy(uf2File, dest, true);
+                    OutputBox.Content += "\n...Waiting for DragonInjector";
+                    OutputBox.ScrollToBottom();
+                    await diDelay();
+                }
+                catch
+                {
+                    OutputBox.Content += "\n...DragonInjector unplugged";
+                    OutputBox.ScrollToBottom();
+                }
+                GetDrives();
+                enableButtons();
             }
             else if (DriveBox.SelectedItem != null && File.Exists(".\\payloads\\defaultfirmware.uf2") && uf2File == null || DriveBox.Text == "Leave blank for DragonBoot")
             {
+                disableButtons();
                 OutputBox.Content += "\n...Using default firmware";
                 OutputBox.ScrollToBottom();
                 string dest = DriveBox.SelectedItem.ToString() + "\\flash.uf2";
                 OutputBox.Content += "\n\\:Copying default firmware to " + DriveBox.SelectedItem.ToString().Replace(":\\", "");
                 OutputBox.ScrollToBottom();
-                File.Copy(defaultFirmware, dest, true);
+                try
+                {
+                    File.Copy(defaultFirmware, dest, true);
+                    OutputBox.Content += "\n...Waiting for DragonInjector";
+                    OutputBox.ScrollToBottom();
+                    await diDelay();
+                }
+                catch
+                {
+                    OutputBox.Content += "\n...DragonInjector unplugged";
+                    OutputBox.ScrollToBottom();
+                }
+                GetDrives();
+                enableButtons();
             }
             else if (!File.Exists(".\\payloads\\defaultfirmware.uf2"))
             {
@@ -70,38 +128,79 @@ namespace DragonInjector_Firmware_Tool
             }
         }
 
-        private void FlashAllButton_Click(object sender, RoutedEventArgs e)
+        private async void FlashAllButton_Click(object sender, RoutedEventArgs e)
         {
             if (uf2File != null)
             {
-                foreach (var item in DriveBox.Items)
+                disableButtons();
+                try
                 {
-                    string dest = item.ToString() + "\\flash.uf2";
-                    OutputBox.Content += "\n\\:Copying " + uf2ShortFile + " to " + item.ToString().Replace(":\\", "");
+                    foreach(var item in DriveBox.Items)
+                {
+                        string dest = item.ToString() + "\\flash.uf2";
+                        OutputBox.Content += "\n\\:Copying " + uf2ShortFile + " to " + item.ToString().Replace(":\\", "");
+                        OutputBox.ScrollToBottom();
+                        File.Copy(uf2File, dest, true);
+                    }
+                    OutputBox.Content += "\n...Waiting for DragonInjector";
                     OutputBox.ScrollToBottom();
-                    File.Copy(uf2File, dest, true);
+                    await diDelay();
+                }
+                catch
+                {
+                    OutputBox.Content += "\n...DragonInjector unplugged";
+                    OutputBox.ScrollToBottom();
                 }
             }
             else
             {
-                foreach (var item in DriveBox.Items)
+                disableButtons();
+                try
                 {
-                    string dest = item.ToString() + "\\flash.uf2";
-                    OutputBox.Content += "\n\\:Copying default firmware to " + item.ToString().Replace(":\\", "");
+                    foreach(var item in DriveBox.Items)
+                {
+                        string dest = item.ToString() + "\\flash.uf2";
+                        OutputBox.Content += "\n\\:Copying default firmware to " + item.ToString().Replace(":\\", "");
+                        OutputBox.ScrollToBottom();
+                        File.Copy(defaultFirmware, dest, true);
+                    }
+                    disableButtons();
+                    OutputBox.Content += "\n...Waiting for DragonInjectors";
                     OutputBox.ScrollToBottom();
-                    File.Copy(defaultFirmware, dest, true);
+                    await diDelay();
+                }
+                catch
+                {
+                    OutputBox.Content += "\n...DragonInjector unplugged";
+                    OutputBox.ScrollToBottom();
                 }
             }
+            GetDrives();
+            enableButtons();
         }
 
-        private void BootloaderButton_Click(object sender, RoutedEventArgs e)
+        private async void BootloaderButton_Click(object sender, RoutedEventArgs e)
         {
             if (DriveBox.SelectedItem != null && File.Exists(".\\payloads\\defaultbootloader.uf2"))
             {
+                disableButtons();
                 string dest = DriveBox.SelectedItem.ToString() + "\\flash.uf2";
                 OutputBox.Content += "\n\\:Updating bootloader on " + DriveBox.SelectedItem.ToString().Replace(":\\", "");
                 OutputBox.ScrollToBottom();
-                File.Copy(defaultBootloader, dest, true);
+                try
+                {
+                    File.Copy(defaultBootloader, dest, true);
+                    OutputBox.Content += "\n...Waiting for DragonInjector";
+                    OutputBox.ScrollToBottom();
+                    await diDelay();
+                }
+                catch
+                {
+                    OutputBox.Content += "\n...DragonInjector unplugged";
+                    OutputBox.ScrollToBottom();
+                }
+                GetDrives();
+                enableButtons();
             }
             else if (!File.Exists(".\\payloads\\defaultbootloader.uf2"))
             {
@@ -115,15 +214,29 @@ namespace DragonInjector_Firmware_Tool
             }
         }
 
-        private void BootloaderAllButton_Click(object sender, RoutedEventArgs e)
+        private async void BootloaderAllButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var item in DriveBox.Items)
+            disableButtons();
+            try
             {
-                string dest = item.ToString() + "\\flash.uf2";
-                OutputBox.Content += "\n\\:Updating bootloader on " + (item.ToString()).Replace(":\\", "");
+                foreach (var item in DriveBox.Items)
+                {
+                    string dest = item.ToString() + "\\flash.uf2";
+                    OutputBox.Content += "\n\\:Updating bootloader on " + (item.ToString()).Replace(":\\", "");
+                    OutputBox.ScrollToBottom();
+                    File.Copy(defaultBootloader, dest, true);
+                }
+                OutputBox.Content += "\n...Waiting for DragonInjectors";
                 OutputBox.ScrollToBottom();
-                File.Copy(defaultBootloader, dest, true);
+                await diDelay();
             }
+            catch
+            {
+                OutputBox.Content += "\n...DragonInjector unplugged";
+                OutputBox.ScrollToBottom();
+            }
+            GetDrives();
+            enableButtons();
         }
 
         private void Drag_Click(object sender, RoutedEventArgs e)
@@ -231,7 +344,6 @@ namespace DragonInjector_Firmware_Tool
                         string version = (regex.Match(lineFW).ToString()).Replace("DI_FW_", "");
                         if (version == fwVersion)
                         {
-                            localFW.ReadToEnd();
                             OutputBox.Content += "\n...Local firmware same as github version. Skipping";
                             OutputBox.ScrollToBottom();
                         }
@@ -273,7 +385,6 @@ namespace DragonInjector_Firmware_Tool
                         string version = (regex.Match(lineBL).ToString()).Replace("DI_BL_", "");
                         if (version == blVersion)
                         {
-                            localBL.ReadToEnd();
                             OutputBox.Content += "\n...Local bootloader same as github version. Skipping";
                             OutputBox.ScrollToBottom();
                         }
@@ -398,8 +509,7 @@ namespace DragonInjector_Firmware_Tool
 
 /*
 TODO:
-wont pickup new current bootloader version on flash or firmware - call getdiversions after flash?
-crash without error if selected drive no longer plugged in (like after flash) - pause after flash then get drives?
+crash without error if selected drive no longer plugged in (like after flash) - Mostly fixed. Need to account for if single drive unplugged. Move try/catch to foreach?
 make downloading more verbose
 make bootloader update firmware too
 */
