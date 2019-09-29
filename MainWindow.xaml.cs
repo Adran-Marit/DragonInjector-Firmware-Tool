@@ -5,7 +5,6 @@ using System.Diagnostics;
 using Octokit;
 using System.Text.RegularExpressions;
 using System.Net;
-using System.Timers;
 using System.Threading.Tasks;
 
 namespace DragonInjector_Firmware_Tool
@@ -300,13 +299,19 @@ namespace DragonInjector_Firmware_Tool
             Process.Start("https://www.dragoninjector.com");
         }
 
+        private void downloadUF2(string urlDownload, string uf2Location)
+        {
+            var downloader = new WebClient();
+            downloader.DownloadFile(urlDownload, uf2Location);
+            downloader.Dispose();
+        }
+
         private async System.Threading.Tasks.Task GetReleasesAsync()
         {
             OutputBox.Content += "\n...Checking for updates";
             OutputBox.ScrollToBottom();
             var regexGIT = new Regex(@"\d*\.\d*");
             Directory.CreateDirectory(".\\payloads");
-            var downloader = new WebClient();
 
             var githubProgram = new GitHubClient(new ProductHeaderValue("Nothing"));
             var releasesProgram = await githubProgram.Repository.Release.GetAll("dragoninjector-project", "DragonInjector-UpdateTool");
@@ -329,6 +334,7 @@ namespace DragonInjector_Firmware_Tool
             var releaseFW = releasesFW[0];
             string fwVersion = regexGIT.Match(releaseFW.TagName.ToString()).ToString();
             string urlFW = releaseFW.Assets[0].BrowserDownloadUrl.ToString();
+            bool downloadFW = false;
             OutputBox.Content += "\nFound firmware release on github: v" + fwVersion;
             OutputBox.ScrollToBottom();
             LatestFirmwareVersionLabel.Text = "v" + fwVersion;
@@ -349,20 +355,24 @@ namespace DragonInjector_Firmware_Tool
                         }
                         else
                         {
-                            localFW.ReadToEnd();
                             OutputBox.Content += "\n...Newer firmware found in github. Downloading";
                             OutputBox.ScrollToBottom();
-                            downloader.DownloadFile(urlFW, ".\\payloads\\defaultfirmware.uf2");
+                            downloadFW = true;
                         }
                     }
                 }
-                localFW.Dispose();
+                localFW.ReadToEnd();
+                localFW.Close();
             }
             else
             {
                 OutputBox.Content += "\n...No local firmware found. Downloading";
                 OutputBox.ScrollToBottom();
-                downloader.DownloadFile(urlFW, ".\\payloads\\defaultfirmware.uf2");
+                downloadFW = true;
+            }
+            if (downloadFW == true)
+            {
+                downloadUF2(urlFW, ".\\payloads\\defaultfirmware.uf2");
             }
 
             var githubBL = new GitHubClient(new ProductHeaderValue("Nothing"));
@@ -370,6 +380,7 @@ namespace DragonInjector_Firmware_Tool
             var releaseBL = releasesBL[0];
             string blVersion = regexGIT.Match(releaseBL.TagName.ToString()).ToString();
             string urlBL = releaseBL.Assets[0].BrowserDownloadUrl.ToString();
+            bool downloadBL = false;
             OutputBox.Content += "\nFound bootloader release on github: v" + blVersion;
             OutputBox.ScrollToBottom();
             LatestBootloaderVersionLabel.Text = "v" + blVersion;
@@ -390,22 +401,25 @@ namespace DragonInjector_Firmware_Tool
                         }
                         else
                         {
-                            localBL.ReadToEnd();
                             OutputBox.Content += "\n...Newer bootloader found in github. Downloading";
                             OutputBox.ScrollToBottom();
-                            downloader.DownloadFile(urlBL, ".\\payloads\\defaultbootloader.uf2");
+                            downloadBL = true;
                         }
                     }
                 }
-                localBL.Dispose();
+                localBL.ReadToEnd();
+                localBL.Close();
             }
             else
             {
                 OutputBox.Content += "\n...No local bootloader found. Downloading";
                 OutputBox.ScrollToBottom();
-                downloader.DownloadFile(urlBL, ".\\payloads\\defaultbootloader.uf2");
+                downloadBL = true;
             }
-            downloader.Dispose();
+            if (downloadBL == true)
+            {
+                downloadUF2(urlBL, ".\\payloads\\defaultbootloader.uf2");
+            }
         }
         
         private void GetDrives()
@@ -512,4 +526,5 @@ TODO:
 crash without error if selected drive no longer plugged in (like after flash) - Mostly fixed. Need to account for if single drive unplugged. Move try/catch to foreach?
 make downloading more verbose
 make bootloader update firmware too
+use variables to reference uf2 locations
 */
