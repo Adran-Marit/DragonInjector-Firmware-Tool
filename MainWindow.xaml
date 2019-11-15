@@ -938,7 +938,7 @@
         <TextBlock x:Name="SelectedPayloadLabel" Visibility="Hidden" HorizontalAlignment="Left" Margin="290,225,0,0" TextWrapping="Wrap" Text="Currently Selected Payload Slot:" VerticalAlignment="Top" Style="{StaticResource SettingsTextBlockStyle}"/>
         <TextBlock x:Name="PreRCMDelayLabel" Visibility="Hidden" HorizontalAlignment="Left" Margin="355,265,0,0" TextWrapping="Wrap" Text="Pre-RCM Selection Delay:" VerticalAlignment="Top" Style="{StaticResource SettingsTextBlockStyle}"/>
         <TextBlock x:Name="DualPayloadLabel" Visibility="Hidden" HorizontalAlignment="Left" Margin="315,305,0,0" TextWrapping="Wrap" Text="Optimized Dual Payload Mode:" VerticalAlignment="Top" Style="{StaticResource SettingsTextBlockStyle}"/>
-        <ComboBox x:Name="BLDelayBox" SelectionChanged="BLDelayBox_SelectionChanged" DropDownClosed="BLDelayBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,105,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
+        <ComboBox x:Name="BLDelayBox" DropDownOpened="BLDelayBox_DropDownOpened" DropDownClosed="BLDelayBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,105,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
             <ComboBoxItem Content="1 SECOND" Tag="bdelay 1"/>
             <ComboBoxItem Content="2 SECONDS" Tag="bdelay 2"/>
             <ComboBoxItem Content="3 SECONDS" Tag="bdelay 3"/>
@@ -949,7 +949,7 @@
             <ComboBoxItem Content="8 SECONDS" Tag="bdelay 8"/>
             <ComboBoxItem Content="9 SECONDS" Tag="bdelay 9"/>
         </ComboBox>
-        <ComboBox x:Name="PayloadSlotsBox" SelectionChanged="PayloadSlotsBox_SelectionChanged" DropDownClosed="PayloadSlotsBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,145,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
+        <ComboBox x:Name="PayloadSlotsBox" DropDownOpened="PayloadSlotsBox_DropDownOpened" DropDownClosed="PayloadSlotsBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,145,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
             <ComboBoxItem Content="1 SLOT" Tag="slots 1"/>
             <ComboBoxItem Content="2 SLOTS" Tag="slots 2"/>
             <ComboBoxItem Content="3 SLOTS" Tag="slots 3"/>
@@ -960,7 +960,7 @@
             <ComboBoxItem Content="8 SLOTS" Tag="slots 8"/>
             <ComboBoxItem Content="9 SLOTS" Tag="slots 9"/>
         </ComboBox>
-        <ComboBox x:Name="ModeSwitchDelayBox" SelectionChanged="ModeSwitchDelayBox_SelectionChanged" DropDownClosed="ModeSwitchDelayBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,185,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
+        <ComboBox x:Name="ModeSwitchDelayBox" DropDownOpened="ModeSwitchDelayBox_DropDownOpened" DropDownClosed="ModeSwitchDelayBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,185,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
             <ComboBoxItem Content="1 SECOND" Tag="mdelay 1"/>
             <ComboBoxItem Content="2 SECONDS" Tag="mdelay 2"/>
             <ComboBoxItem Content="3 SECONDS" Tag="mdelay 3"/>
@@ -971,7 +971,7 @@
             <ComboBoxItem Content="8 SECONDS" Tag="mdelay 8"/>
             <ComboBoxItem Content="9 SECONDS" Tag="mdelay 9"/>
         </ComboBox>
-        <ComboBox x:Name="SelectedPayloadBox" SelectionChanged="SelectedPayloadBox_SelectionChanged" DropDownClosed="SelectedPayloadBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,225,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
+        <ComboBox x:Name="SelectedPayloadBox" DropDownOpened="SelectedPayloadBox_DropDownOpened" DropDownClosed="SelectedPayloadBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,225,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
             <ComboBoxItem Content="0 (SINGLE MODE)" Tag="cslot 0"/>
             <ComboBoxItem Content="1 (MULTI-MODE)" Tag="cslot 1"/>
             <ComboBoxItem Content="2 (MULTI-MODE)" Tag="cslot 2"/>
@@ -983,12 +983,12 @@
             <ComboBoxItem Content="8 (MULTI-MODE)" Tag="cslot 8"/>
             <ComboBoxItem Content="9 (MULTI-MODE)" Tag="cslot 9"/>
         </ComboBox>
-        <ComboBox x:Name="PreRCMDelayBox" SelectionChanged="PreRCMDelayBox_SelectionChanged" DropDownClosed="PreRCMDelayBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,265,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
+        <ComboBox x:Name="PreRCMDelayBox" DropDownOpened="PreRCMDelayBox_DropDownOpened" DropDownClosed="PreRCMDelayBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,265,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
             <ComboBoxItem Content="1 SECOND" Tag="rdelay 1"/>
             <ComboBoxItem Content="2 SECONDS" Tag="rdelay 2"/>
             <ComboBoxItem Content="3 SECONDS" Tag="rdelay 3"/>
         </ComboBox>
-        <ComboBox x:Name="DualPayloadBox" SelectionChanged="DualPayloadBox_SelectionChanged" DropDownClosed="DualPayloadBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,305,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
+        <ComboBox x:Name="DualPayloadBox" DropDownOpened="DualPayloadBox_DropDownOpened" DropDownClosed="DualPayloadBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,305,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
             <ComboBoxItem Content="OFF" Tag="dmode 0"/>
             <ComboBoxItem Content="ON" Tag="dmode 1"/>
         </ComboBox>

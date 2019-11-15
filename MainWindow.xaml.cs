@@ -21,7 +21,7 @@ namespace DragonInjector_Firmware_Tool
         string uf2ShortFile;
         readonly string defaultFirmware = Directory.GetCurrentDirectory() + "\\bin\\defaultfirmware.uf2";
         readonly string defaultBootloader = Directory.GetCurrentDirectory() + "\\bin\\defaultbootloader.uf2";
-        readonly string programVersion = "1.13";
+        readonly string programVersion = "1.14";
 
         public MainWindow()
         {
@@ -740,6 +740,13 @@ namespace DragonInjector_Firmware_Tool
             COMSelectBox.ItemsSource = SerialPort.GetPortNames();
         }
 
+        public int changeSelect= -1;
+
+        private void BLDelayBox_DropDownOpened(object sender, EventArgs e)
+        {
+            changeSelect = BLDelayBox.SelectedIndex;
+        }
+
         private void BLDelayBox_DropDownClosed(object sender, EventArgs e)
         {
             if (COMSelectBox.SelectedValue == null)
@@ -747,20 +754,19 @@ namespace DragonInjector_Firmware_Tool
                 BLDelayBox.SelectedIndex = -1;
                 MessageBox.Show("No COM port selected.");
             }
-            else
-            {
-                OutputBox.Content += "\n!Wrote setting";
-                OutputBox.ScrollToBottom();
-            }
-        }
-
-        private void BLDelayBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (COMSelectBox.SelectedValue != null)
+            else if (BLDelayBox.SelectedIndex != changeSelect)
             {
                 string selectedOption = BLDelayBox.SelectedValue.ToString();
                 ConnectSerial(selectedOption);
+                OutputBox.Content += "\n!Wrote setting";
+                OutputBox.ScrollToBottom();
+                changeSelect = -1;
             }
+        }
+
+        private void PayloadSlotsBox_DropDownOpened(object sender, EventArgs e)
+        {
+            changeSelect = PayloadSlotsBox.SelectedIndex;
         }
 
         private void PayloadSlotsBox_DropDownClosed(object sender, EventArgs e)
@@ -770,20 +776,19 @@ namespace DragonInjector_Firmware_Tool
                 PayloadSlotsBox.SelectedIndex = -1;
                 MessageBox.Show("No COM port selected.");
             }
-            else
-            {
-                OutputBox.Content += "\n!Wrote setting";
-                OutputBox.ScrollToBottom();
-            }
-        }
-
-        private void PayloadSlotsBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (COMSelectBox.SelectedValue != null)
+            else if (PayloadSlotsBox.SelectedIndex != changeSelect)
             {
                 string selectedOption = PayloadSlotsBox.SelectedValue.ToString();
                 ConnectSerial(selectedOption);
+                OutputBox.Content += "\n!Wrote setting";
+                OutputBox.ScrollToBottom();
+                changeSelect = -1;
             }
+        }
+
+        private void ModeSwitchDelayBox_DropDownOpened(object sender, EventArgs e)
+        {
+            changeSelect = ModeSwitchDelayBox.SelectedIndex;
         }
 
         private void ModeSwitchDelayBox_DropDownClosed(object sender, EventArgs e)
@@ -793,20 +798,19 @@ namespace DragonInjector_Firmware_Tool
                 ModeSwitchDelayBox.SelectedIndex = -1;
                 MessageBox.Show("No COM port selected.");
             }
-            else
-            {
-                OutputBox.Content += "\n!Wrote setting";
-                OutputBox.ScrollToBottom();
-            }
-        }
-
-        private void ModeSwitchDelayBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (COMSelectBox.SelectedValue != null)
+            else if (ModeSwitchDelayBox.SelectedIndex != changeSelect)
             {
                 string selectedOption = ModeSwitchDelayBox.SelectedValue.ToString();
                 ConnectSerial(selectedOption);
+                OutputBox.Content += "\n!Wrote setting";
+                OutputBox.ScrollToBottom();
+                changeSelect = -1;
             }
+        }
+
+        private void SelectedPayloadBox_DropDownOpened(object sender, EventArgs e)
+        {
+            changeSelect = SelectedPayloadBox.SelectedIndex;
         }
 
         private void SelectedPayloadBox_DropDownClosed(object sender, EventArgs e)
@@ -816,20 +820,19 @@ namespace DragonInjector_Firmware_Tool
                 SelectedPayloadBox.SelectedIndex = -1;
                 MessageBox.Show("No COM port selected.");
             }
-            else
-            {
-                OutputBox.Content += "\n!Wrote setting";
-                OutputBox.ScrollToBottom();
-            }
-        }
-
-        private void SelectedPayloadBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (COMSelectBox.SelectedValue != null)
+            else if (SelectedPayloadBox.SelectedIndex != changeSelect)
             {
                 string selectedOption = SelectedPayloadBox.SelectedValue.ToString();
                 ConnectSerial(selectedOption);
+                OutputBox.Content += "\n!Wrote setting";
+                OutputBox.ScrollToBottom();
+                changeSelect = -1;
             }
+        }
+
+        private void PreRCMDelayBox_DropDownOpened(object sender, EventArgs e)
+        {
+            changeSelect = PreRCMDelayBox.SelectedIndex;
         }
 
         private void PreRCMDelayBox_DropDownClosed(object sender, EventArgs e)
@@ -839,20 +842,19 @@ namespace DragonInjector_Firmware_Tool
                 PreRCMDelayBox.SelectedIndex = -1;
                 MessageBox.Show("No COM port selected.");
             }
-            else
-            {
-                OutputBox.Content += "\n!Wrote setting";
-                OutputBox.ScrollToBottom();
-            }
-        }
-
-        private void PreRCMDelayBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (COMSelectBox.SelectedValue != null)
+            else if (PreRCMDelayBox.SelectedIndex != changeSelect)
             {
                 string selectedOption = PreRCMDelayBox.SelectedValue.ToString();
                 ConnectSerial(selectedOption);
+                OutputBox.Content += "\n!Wrote setting";
+                OutputBox.ScrollToBottom();
+                changeSelect = -1;
             }
+        }
+
+        private void DualPayloadBox_DropDownOpened(object sender, EventArgs e)
+        {
+            changeSelect = DualPayloadBox.SelectedIndex;
         }
 
         private void DualPayloadBox_DropDownClosed(object sender, EventArgs e)
@@ -862,19 +864,13 @@ namespace DragonInjector_Firmware_Tool
                 DualPayloadBox.SelectedIndex = -1;
                 MessageBox.Show("No COM port selected.");
             }
-            else
-            {
-                OutputBox.Content += "\n!Wrote setting";
-                OutputBox.ScrollToBottom();
-            }
-        }
-
-        private void DualPayloadBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (COMSelectBox.SelectedValue != null)
+            else if (DualPayloadBox.SelectedIndex != changeSelect)
             {
                 string selectedOption = DualPayloadBox.SelectedValue.ToString();
                 ConnectSerial(selectedOption);
+                OutputBox.Content += "\n!Wrote setting";
+                OutputBox.ScrollToBottom();
+                changeSelect = -1;
             }
         }
 
@@ -974,17 +970,24 @@ namespace DragonInjector_Firmware_Tool
                         openFileDialog.Filter = "JSON (*.json)|*.json";
                         if (openFileDialog.ShowDialog() == true)
                         {
+                            string selectedOption;
                             string filePath = openFileDialog.FileName;
                             string settingsShortFile = (Path.GetFileName(filePath)).ToString();
                             string settingsFile = Path.GetFullPath(filePath).ToString();
                             string json = File.ReadAllText(settingsFile);
                             jsonSettingsObject jsonSetting = JsonConvert.DeserializeObject<jsonSettingsObject>(json);
                             BLDelayBox.SelectedIndex = jsonSetting.bdelay - 1;
+                            ConnectSerial("bdelay " + jsonSetting.bdelay.ToString());
                             PayloadSlotsBox.SelectedIndex = jsonSetting.slots - 1;
+                            ConnectSerial("slots " + jsonSetting.slots.ToString());
                             ModeSwitchDelayBox.SelectedIndex = jsonSetting.mdelay - 1;
+                            ConnectSerial("mdelay " + jsonSetting.mdelay.ToString());
                             SelectedPayloadBox.SelectedIndex = jsonSetting.cslot;
+                            ConnectSerial("cslot " + jsonSetting.cslot.ToString());
                             PreRCMDelayBox.SelectedIndex = jsonSetting.rdelay - 1;
+                            ConnectSerial("rdelay " + jsonSetting.rdelay.ToString());
                             DualPayloadBox.SelectedIndex = jsonSetting.dmode;
+                            ConnectSerial("dmode " + jsonSetting.dmode.ToString());
                             OutputBox.Content += "\n!Loaded settings";
                             OutputBox.ScrollToBottom();
                         }
@@ -1042,11 +1045,17 @@ namespace DragonInjector_Firmware_Tool
                 if (COMSelectBox.SelectedValue != null)
                 {
                     BLDelayBox.SelectedIndex = 4;
+                    ConnectSerial("bdelay 5");
                     PayloadSlotsBox.SelectedIndex = 3;
+                    ConnectSerial("slots 4");
                     ModeSwitchDelayBox.SelectedIndex = 2;
+                    ConnectSerial("mdelay 3");
                     SelectedPayloadBox.SelectedIndex = 0;
+                    ConnectSerial("cslot 0");
                     PreRCMDelayBox.SelectedIndex = 0;
+                    ConnectSerial("rdelay 1");
                     DualPayloadBox.SelectedIndex = 0;
+                    ConnectSerial("dmode 0");
                     OutputBox.Content += "\n!Default settings applied";
                     OutputBox.ScrollToBottom();
                 }
