@@ -50,6 +50,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -144,6 +145,39 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="resources\di_logo_hover_13_417.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\back_button_hover_576_56.png" />
+    <Resource Include="resources\back_button_normal_576_56.png" />
+    <Resource Include="resources\back_button_pressed_576_56.png" />
+    <Resource Include="resources\settings_button_hover_576_56.png" />
+    <Resource Include="resources\settings_button_normal_576_56.png" />
+    <Resource Include="resources\settings_button_pressed_576_56.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\help_button_hover_576_56.png" />
+    <Resource Include="resources\help_button_normal_576_56.png" />
+    <Resource Include="resources\settings_select_background_16_49.png" />
+    <Resource Include="resources\setting_field_with_arrow_hover_277_56.png" />
+    <Resource Include="resources\setting_field_with_arrow_normal_277_56.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\setting_field_without_arrow_hover_277_56.png" />
+    <Resource Include="resources\setting_field_without_arrow_normal_277_56.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\background_settings_0_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\defaults_button_hover_760_56.png" />
+    <Resource Include="resources\defaults_button_normal_760_56.png" />
+    <Resource Include="resources\defaults_button_pressed_760_56.png" />
+    <Resource Include="resources\load_button_hover_615_56.png" />
+    <Resource Include="resources\load_button_normal_615_56.png" />
+    <Resource Include="resources\load_button_pressed_615_56.png" />
+    <Resource Include="resources\save_button_hover_688_56.png" />
+    <Resource Include="resources\save_button_normal_688_56.png" />
+    <Resource Include="resources\save_button_pressed_688_56.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

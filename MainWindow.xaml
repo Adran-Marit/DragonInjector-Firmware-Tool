@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Name="Window" Title="DragonInjector Firmware Tool" Height="519" Width="919" Opacity="0.96" WindowStartupLocation="CenterScreen" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" ResizeMode="NoResize" AllowsTransparency="True" BorderThickness="2" BorderBrush="Black" WindowStyle="None">
+        Name="Window" Title="DragonInjector Firmware Tool" Height="519" Width="919" Opacity="0.96" WindowStartupLocation="CenterScreen" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" ResizeMode="NoResize" AllowsTransparency="True" BorderThickness="2" BorderBrush="Transparent" WindowStyle="None">
     <Window.Resources>
-        
+
         <!--All of the image resources are here-->
         <ImageBrush x:Key="PayloadBoxImg" ImageSource="resources\input_field_normal_277_56.png"/>
         <ImageBrush x:Key="FlashButtonImg" ImageSource="resources\flash_firmware_normal_569_169.png"/>
@@ -25,6 +25,15 @@
         <BitmapImage x:Key="FirmwareGroupPictureImg" UriSource="resources\firmware_group_background_18_148.png"/>
         <BitmapImage x:Key="BootloaderGroupPictureImg" UriSource="resources\bootloader_group_background_18_245.png"/>
         <BitmapImage x:Key="OutputGroupPictureImg" UriSource="resources\output_text_background_18_344.png"/>
+        <ImageBrush x:Key="SettingsButtonImg" ImageSource="resources\settings_button_normal_576_56.png"/>
+        <ImageBrush x:Key="SettingsBackButtonImg" ImageSource="resources\back_button_normal_576_56.png"/>
+        <BitmapImage x:Key="SettingsGroupPictureImg" UriSource="resources\settings_select_background_16_49.png"/>
+        <ImageBrush x:Key="SettingsBoxImg" ImageSource="resources\setting_field_with_arrow_normal_277_56.png"/>
+        <ImageBrush x:Key="SettingsDisabledBoxImg" ImageSource="resources\setting_field_without_arrow_normal_277_56.png"/>
+        <ImageBrush x:Key="HelpButtonImg" ImageSource="resources\help_button_normal_576_56.png"/>
+        <ImageBrush x:Key="LoadSettingsButtonImg" ImageSource="resources\load_button_normal_615_56.png"/>
+        <ImageBrush x:Key="SaveSettingsButtonImg" ImageSource="resources\save_button_normal_688_56.png"/>
+        <ImageBrush x:Key="DefaultSettingsButtonImg" ImageSource="resources\defaults_button_normal_760_56.png"/>
 
         <ImageBrush x:Key="DriveBoxHoverImg" ImageSource="resources\input_field_with_arrow_hover_277_56.png"/>
         <ImageBrush x:Key="PayloadBoxHoverImg" ImageSource="resources\input_field_hover_277_56.png"/>
@@ -37,12 +46,24 @@
         <ImageBrush x:Key="BootloaderAllButtonHoverImg" ImageSource="resources\update_all_hover_754_266.png"/>
         <ImageBrush x:Key="CloseButtonHoverImg" ImageSource="resources\exit_hover_855_0.png"/>
         <ImageBrush x:Key="LogoButtonHoverImg" ImageSource="resources\di_logo_hover_13_417.png"/>
+        <ImageBrush x:Key="SettingsButtonHoverImg" ImageSource="resources\settings_button_hover_576_56.png"/>
+        <ImageBrush x:Key="SettingsBackButtonHoverImg" ImageSource="resources\back_button_hover_576_56.png"/>
+        <ImageBrush x:Key="SettingsBoxHoverImg" ImageSource="resources\setting_field_with_arrow_hover_277_56.png"/>
+        <ImageBrush x:Key="HelpButtonHoverImg" ImageSource="resources\help_button_hover_576_56.png"/>
+        <ImageBrush x:Key="LoadSettingsButtonHoverImg" ImageSource="resources\load_button_hover_615_56.png"/>
+        <ImageBrush x:Key="SaveSettingsButtonHoverImg" ImageSource="resources\save_button_hover_688_56.png"/>
+        <ImageBrush x:Key="DefaultSettingsButtonHoverImg" ImageSource="resources\defaults_button_hover_760_56.png"/>
 
         <ImageBrush x:Key="FlashButtonPressedImg" ImageSource="resources\flash_firmware_pressed_569_169.png"/>
         <ImageBrush x:Key="FlashAllButtonPressedImg" ImageSource="resources\flash_all_pressed_776_169.png"/>
         <ImageBrush x:Key="BootloaderButtonPressedImg" ImageSource="resources\update_bootloader_pressed_507_266.png"/>
         <ImageBrush x:Key="BootloaderAllButtonPressedImg" ImageSource="resources\update_all_pressed_754_266.png"/>
         <ImageBrush x:Key="CheckUpdateButtonPressedImg" ImageSource="resources\new_tool_available_pressed_657_70.png"/>
+        <ImageBrush x:Key="SettingsButtonPressedImg" ImageSource="resources\settings_button_pressed_576_56.png"/>
+        <ImageBrush x:Key="SettingsBackButtonPressedImg" ImageSource="resources\back_button_pressed_576_56.png"/>
+        <ImageBrush x:Key="LoadSettingsButtonPressedImg" ImageSource="resources\load_button_pressed_615_56.png"/>
+        <ImageBrush x:Key="SaveSettingsButtonPressedImg" ImageSource="resources\save_button_pressed_688_56.png"/>
+        <ImageBrush x:Key="DefaultSettingsButtonPressedImg" ImageSource="resources\defaults_button_pressed_760_56.png"/>
 
         <!--This section is strictly nuance behaviors and styling for elements of some controls-->
         <Style x:Key="NoHover" TargetType="{x:Type Button}">
@@ -128,6 +149,41 @@
                 <Trigger Property="ToggleButton.IsChecked" Value="True">
                     <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="Transparent"/>
                     <Setter Property="Background" TargetName="Border" Value="{StaticResource DriveBoxHoverImg}"/>
+                    <Setter Property="Shape.Fill" TargetName="Arrow" Value="Transparent"/>
+                </Trigger>
+                <Trigger Property="UIElement.IsEnabled" Value="False">
+                    <Setter Property="Panel.Background" TargetName="Border" Value="Transparent"/>
+                    <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="Transparent"/>
+                    <Setter Property="Border.BorderBrush" TargetName="ButtonBorder" Value="Transparent"/>
+                    <Setter Property="TextElement.Foreground" Value="White"/>
+                    <Setter Property="Shape.Fill" TargetName="Arrow" Value="White"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate TargetType="ToggleButton" x:Key="SettingsComboBoxToggleButtonTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="16" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Name="Border" BorderBrush="Transparent" CornerRadius="0" BorderThickness="1, 1, 1, 1" Background="{StaticResource SettingsBoxImg}" />
+                <Border Grid.Column="1" Margin="1, 1, 1, 1" BorderBrush="Transparent" Name="ButtonBorder" CornerRadius="0, 0, 0, 0" BorderThickness="0, 0, 0, 0" Background="Transparent" />
+                <Path x:Name="Arrow" Grid.Column="1" HorizontalAlignment="Center" Margin="1,-1,0,0" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z" Fill="Transparent"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                    <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="Transparent"/>
+                    <Setter Property="Background" TargetName="Border" Value="{StaticResource SettingsBoxHoverImg}"/>
+                    <Setter Property="Shape.Fill" TargetName="Arrow" Value="Transparent" />
+                </Trigger>
+                <Trigger Property="UIElement.IsMouseOver" Value="False">
+                    <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="Transparent"/>
+                    <Setter Property="Shape.Fill" TargetName="Arrow" Value="Transparent" />
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="Transparent"/>
+                    <Setter Property="Background" TargetName="Border" Value="{StaticResource SettingsBoxHoverImg}"/>
                     <Setter Property="Shape.Fill" TargetName="Arrow" Value="Transparent"/>
                 </Trigger>
                 <Trigger Property="UIElement.IsEnabled" Value="False">
@@ -489,6 +545,75 @@
             </Setter>
         </Style>
 
+        <Style x:Key="LoadSettingsStyle" TargetType="Button" BasedOn="{StaticResource NoHover}">
+            <Setter Property="Background" Value="{StaticResource LoadSettingsButtonImg}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                            Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource LoadSettingsButtonHoverImg}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource LoadSettingsButtonPressedImg}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="SaveSettingsStyle" TargetType="Button" BasedOn="{StaticResource NoHover}">
+            <Setter Property="Background" Value="{StaticResource SaveSettingsButtonImg}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                            Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource SaveSettingsButtonHoverImg}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource SaveSettingsButtonPressedImg}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="DefaultSettingsStyle" TargetType="Button" BasedOn="{StaticResource NoHover}">
+            <Setter Property="Background" Value="{StaticResource DefaultSettingsButtonImg}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                            Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource DefaultSettingsButtonHoverImg}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource DefaultSettingsButtonPressedImg}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="DriveStyle" TargetType="Button" BasedOn="{StaticResource NoHover}">
             <Setter Property="Background" Value="{StaticResource DriveButtonImg}"/>
             <Setter Property="Template">
@@ -509,6 +634,84 @@
             </Setter>
         </Style>
 
+        <Style x:Key="SettingsStyle" TargetType="Button" BasedOn="{StaticResource NoHover}">
+            <Setter Property="Background" Value="{StaticResource SettingsButtonImg}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                            Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource SettingsButtonHoverImg}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource SettingsButtonPressedImg}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SettingsBackStyle" TargetType="Button" BasedOn="{StaticResource NoHover}">
+            <Setter Property="Background" Value="{StaticResource SettingsBackButtonImg}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                            Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource SettingsBackButtonHoverImg}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource SettingsBackButtonPressedImg}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="HelpButtonStyle" TargetType="Button" BasedOn="{StaticResource NoHover}">
+            <Setter Property="Background" Value="{StaticResource HelpButtonImg}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                            Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource HelpButtonHoverImg}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Popup">
+            <Style.Resources>
+                <Style TargetType="ContentPresenter">
+                    <Style.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Background" Value="Black"/>
+                        </Style>
+                    </Style.Resources>
+                </Style>
+            </Style.Resources>
+        </Style>
+
         <Style x:Key="TitleStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="Foreground" Value="White"/>
@@ -516,6 +719,15 @@
         </Style>
         <Style x:Key="TextBlockStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="TextTrimming" Value="None"/>
+            <Setter Property="FontFamily" Value="resources\EurostileNextLTPro-Regular.ttf #Eurostile Next LT Pro"/>
+        </Style>
+
+        <Style x:Key="SettingsTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="22"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="TextWrapping" Value="NoWrap"/>
@@ -551,7 +763,7 @@
         </Style>
 
         <!--These are the main styles to set values on controls where they are a bit more tricky-->
-        
+
         <Style x:Key="OutputBoxStyle" TargetType="ScrollViewer">
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="Foreground" Value="White"/>
@@ -635,18 +847,62 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
+        <Style x:Key="SettingsComboBoxFlatStyle"  TargetType="{x:Type ComboBox}">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily" Value="resources\EurostileNextLTPro-Regular.ttf #Eurostile Next LT Pro"/>
+            <Setter Property="UIElement.SnapsToDevicePixels" Value="True"/>
+            <Setter Property="FrameworkElement.OverridesDefaultStyle" Value="True"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="TextElement.Foreground" Value="Gray"/>
+            <Setter Property="FrameworkElement.FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Name="PART_ToggleButton" Grid.Column="2" ClickMode="Press" Focusable="False" IsChecked="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Template="{StaticResource SettingsComboBoxToggleButtonTemplate}"/>
+                            <ContentPresenter Name="ContentSite" Margin="5, 3, 23, 3" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{TemplateBinding ComboBox.SelectionBoxItem}" ContentTemplate="{TemplateBinding ComboBox.SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"/>
+                            <TextBox Name="PART_EditableTextBox" Margin="3, 3, 23, 3" IsReadOnly="{TemplateBinding IsReadOnly}" Visibility="Hidden" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Focusable="True" >
+                                <TextBox.Template>
+                                    <ControlTemplate TargetType="TextBox" >
+                                        <Border Name="PART_ContentHost" Focusable="False" />
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource SettingsBoxHoverImg}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </TextBox.Template>
+                            </TextBox>
+                            <Border Name="OutlineBoder" BorderBrush="Transparent" IsHitTestVisible="False" />
+                            <Popup Name="PART_Popup" Placement="Bottom" Focusable="False" AllowsTransparency="True" IsOpen="{TemplateBinding ComboBox.IsDropDownOpen}" PopupAnimation="Slide">
+                                <Grid Name="DropDown" SnapsToDevicePixels="True" >
+                                    <Border Name="DropDownBorder" Background="Black" Margin="0, 0, 0, 0" CornerRadius="0" BorderThickness="0,0,0,0" BorderBrush="Black" Opacity="0.9"/>
+                                    <ScrollViewer Margin="0,0,0,0" SnapsToDevicePixels="True" Width="255">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Window.Resources>
     <Grid Name="Grid" Margin="0" Width="919" Height="519" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
-        <Image Name="GridBackground" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Width="919" Height="519" Source="{StaticResource GridPictureImg}"/>
+        <Image Name="GridBackground" HorizontalAlignment="Left" Margin="-1" VerticalAlignment="Top" Width="919" Height="519" Source="{StaticResource GridPictureImg}"/>
         <Image Name="PayloadGroupPicture" HorizontalAlignment="Left" Margin="18,49,0,0" VerticalAlignment="Top" Width="890" Height="84" Source="{StaticResource PayloadGroupPictureImg}"/>
         <Image Name="FirmwareGroupPicture" HorizontalAlignment="Left" Margin="18,148,0,0" VerticalAlignment="Top" Width="890" Height="84" Source="{StaticResource FirmwareGroupPictureImg}"/>
-        <TextBlock Name="PayloadLabel" HorizontalAlignment="Left" Margin="138,60,0,0" TextWrapping="Wrap" Text="Custom UF2: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>
-        <TextBlock Name="DriveLabel" HorizontalAlignment="Left" Margin="56,99,0,0" TextWrapping="Wrap" Text="Select Dragoninjector: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>
-        <ComboBox Name="DriveBox" HorizontalAlignment="Left" Margin="276,95,0,0" VerticalAlignment="Top" Width="254" Height="31" Style="{StaticResource ComboBoxFlatStyle}" SelectionChanged="DriveBox_SelectionChanged"/>
-        <TextBox Name="PayloadTextBox" HorizontalAlignment="Left" Margin="277,56,0,0" TextWrapping="Wrap" Text="DragonBoot (default)" VerticalAlignment="Top" Width="254" Height="31" Style="{StaticResource TextBoxStyle}" PreviewMouseDown="PayloadTextBox_Click"/>
-        <Button Name="PayloadButton" HorizontalAlignment="Left" Margin="538,56,0,0" VerticalAlignment="Top" Width="31" Height="31" Style="{StaticResource PayloadStyle}" Click="PayloadButton_Click"/>
-        <Button Name="DriveButton" HorizontalAlignment="Left" Margin="538,95,0,0" VerticalAlignment="Top" Width="31" Height="31" BorderThickness="0" Style="{StaticResource DriveStyle}" Click="DriveButton_Click"/>
+        <TextBlock Name="PayloadLabel" HorizontalAlignment="Left" Margin="138,99,0,0" TextWrapping="Wrap" Text="Custom UF2: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>
+        <TextBlock Name="DriveLabel" HorizontalAlignment="Left" Margin="56,60,0,0" TextWrapping="Wrap" Text="Select DragonInjector: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>
+        <ComboBox Name="DriveBox" HorizontalAlignment="Left" Margin="276,56,0,0" VerticalAlignment="Top" Width="254" Height="31" Style="{StaticResource ComboBoxFlatStyle}" SelectionChanged="DriveBox_SelectionChanged"/>
+        <TextBox Name="PayloadTextBox" HorizontalAlignment="Left" Margin="277,95,0,0" TextWrapping="Wrap" Text="DragonBoot (default)" VerticalAlignment="Top" Width="254" Height="31" Style="{StaticResource TextBoxStyle}" PreviewMouseDown="PayloadTextBox_Click"/>
+        <Button Name="PayloadButton" HorizontalAlignment="Left" Margin="538,95,0,0" VerticalAlignment="Top" Width="31" Height="31" Style="{StaticResource PayloadStyle}" Click="PayloadButton_Click"/>
+        <Button Name="DriveButton" HorizontalAlignment="Left" Margin="538,56,0,0" VerticalAlignment="Top" Width="31" Height="31" Style="{StaticResource DriveStyle}" Click="DriveButton_Click"/>
         <TextBlock Name="FirmwareLabel" HorizontalAlignment="Left" Margin="88,153,0,0" TextWrapping="Wrap" Text="Current Firmware: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>
         <TextBlock Name="LatestFirmwareLabel" HorizontalAlignment="Left" Margin="102,193,0,0" Text="Latest Firmware: " VerticalAlignment="Top" Style="{StaticResource TextBlockStyle}"/>
         <Button Name="FlashButton" HorizontalAlignment="Left" Margin="569,169,0,0" VerticalAlignment="Top" Height="44" Width="191" Style="{StaticResource FlashFirmwareStyle}" Click="FlashButton_Click"/>
@@ -667,5 +923,111 @@
         <Button Name="CheckUpdateButton" HorizontalAlignment="Left" Margin="657,70,0,0" VerticalAlignment="Top" Height="42" Width="232" BorderThickness="0" Visibility="Hidden" Style="{StaticResource CheckUpdatesStyle}" Click="CheckUpdateButton_Click"/>
         <ScrollViewer Name="OutputBox" HorizontalAlignment="Left" Height="150" Margin="130,350,0,0" Content="...Starting DragonInjector Firmware Tool" VerticalAlignment="Top" Width="800" Style="{StaticResource OutputBoxStyle}"/>
         <Button Name="LogoButton" HorizontalAlignment="Left" Height="85" Margin="10,424,0,0" VerticalAlignment="Top" Width="109" BorderThickness="0" Style="{StaticResource LogoStyle}" Click="LogoButton_Click"/>
+        <Button x:Name="SettingsButton" HorizontalAlignment="Left" Margin="576,56,0,0" VerticalAlignment="Top" Width="31" Height="31" Click="SettingsButton_Click" Style="{StaticResource SettingsStyle}"/>
+        <Image Name="SettingsGroupPicture" Visibility="Hidden" HorizontalAlignment="Left" Margin="18,49,0,0" VerticalAlignment="Top" Width="890" Height="45" Source="{StaticResource SettingsGroupPictureImg}"/>
+        <Button x:Name="SettingsBackButton" Visibility="Hidden" HorizontalAlignment="Left" Margin="576,56,0,0" VerticalAlignment="Top" Height="31" Width="31" Click="SettingsBackButton_Click" Style="{StaticResource SettingsBackStyle}"/>
+        <TextBlock x:Name="COMSelectLabel" HorizontalAlignment="Left" Margin="56,60,0,0" TextWrapping="Wrap" Text="Select DragonInjector:" VerticalAlignment="Top" Visibility="Hidden" Style="{StaticResource TextBlockStyle}"/>
+        <ComboBox x:Name="COMSelectBox" SelectionChanged="COMSelectBox_SelectionChanged" Visibility="Hidden" HorizontalAlignment="Left" Margin="276,56,0,0" VerticalAlignment="Top" Width="254" Height="31" Style="{StaticResource ComboBoxFlatStyle}"/>
+        <Button Name="COMRescanButton" Visibility="Hidden" HorizontalAlignment="Left" Margin="538,56,0,0" VerticalAlignment="Top" Width="31" Height="31" Style="{StaticResource DriveStyle}" Click="COMRescanButton_Click"/>
+        <Button x:Name="LoadSettingsButton" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,56,0,0" VerticalAlignment="Top" Height="31" Width="65" Click="LoadSettingsButton_Click" Style="{StaticResource LoadSettingsStyle}"/>
+        <Button x:Name="SaveSettingsButton" Visibility="Hidden" HorizontalAlignment="Left" Margin="688,56,0,0" VerticalAlignment="Top" Height="31" Width="65" Click="SaveSettingsButton_Click" Style="{StaticResource SaveSettingsStyle}"/>
+        <Button x:Name="DefaultSettingsButton" Visibility="Hidden" HorizontalAlignment="Left" Margin="760,56,0,0" VerticalAlignment="Top" Height="31" Width="108" Click="DefaultSettingsButton_Click" Style="{StaticResource DefaultSettingsStyle}"/>
+        <TextBlock x:Name="BLDelayLabel" Visibility="Hidden" HorizontalAlignment="Left" Margin="330,105,0,0" TextWrapping="Wrap" Text="Reboot To Bootloader Delay:" VerticalAlignment="Top" Style="{StaticResource SettingsTextBlockStyle}"/>
+        <TextBlock x:Name="PayloadSlotsLabel" Visibility="Hidden" HorizontalAlignment="Left" Margin="250,145,0,0" TextWrapping="Wrap" Text="Maximum Multi-Mode Payload Slots:" VerticalAlignment="Top" Style="{StaticResource SettingsTextBlockStyle}"/>
+        <TextBlock x:Name="ModeSwitchDelayLabel" Visibility="Hidden" HorizontalAlignment="Left" Margin="290,185,0,0" TextWrapping="Wrap" Text="Single/Multi Mode Switch Delay:" VerticalAlignment="Top" Style="{StaticResource SettingsTextBlockStyle}"/>
+        <TextBlock x:Name="SelectedPayloadLabel" Visibility="Hidden" HorizontalAlignment="Left" Margin="290,225,0,0" TextWrapping="Wrap" Text="Currently Selected Payload Slot:" VerticalAlignment="Top" Style="{StaticResource SettingsTextBlockStyle}"/>
+        <TextBlock x:Name="PreRCMDelayLabel" Visibility="Hidden" HorizontalAlignment="Left" Margin="355,265,0,0" TextWrapping="Wrap" Text="Pre-RCM Selection Delay:" VerticalAlignment="Top" Style="{StaticResource SettingsTextBlockStyle}"/>
+        <TextBlock x:Name="DualPayloadLabel" Visibility="Hidden" HorizontalAlignment="Left" Margin="315,305,0,0" TextWrapping="Wrap" Text="Optimized Dual Payload Mode:" VerticalAlignment="Top" Style="{StaticResource SettingsTextBlockStyle}"/>
+        <ComboBox x:Name="BLDelayBox" SelectionChanged="BLDelayBox_SelectionChanged" DropDownClosed="BLDelayBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,105,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
+            <ComboBoxItem Content="1 SECOND" Tag="bdelay 1"/>
+            <ComboBoxItem Content="2 SECONDS" Tag="bdelay 2"/>
+            <ComboBoxItem Content="3 SECONDS" Tag="bdelay 3"/>
+            <ComboBoxItem Content="4 SECONDS" Tag="bdelay 4"/>
+            <ComboBoxItem Content="5 SECONDS" Tag="bdelay 5"/>
+            <ComboBoxItem Content="6 SECONDS" Tag="bdelay 6"/>
+            <ComboBoxItem Content="7 SECONDS" Tag="bdelay 7"/>
+            <ComboBoxItem Content="8 SECONDS" Tag="bdelay 8"/>
+            <ComboBoxItem Content="9 SECONDS" Tag="bdelay 9"/>
+        </ComboBox>
+        <ComboBox x:Name="PayloadSlotsBox" SelectionChanged="PayloadSlotsBox_SelectionChanged" DropDownClosed="PayloadSlotsBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,145,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
+            <ComboBoxItem Content="1 SLOT" Tag="slots 1"/>
+            <ComboBoxItem Content="2 SLOTS" Tag="slots 2"/>
+            <ComboBoxItem Content="3 SLOTS" Tag="slots 3"/>
+            <ComboBoxItem Content="4 SLOTS" Tag="slots 4"/>
+            <ComboBoxItem Content="5 SLOTS" Tag="slots 5"/>
+            <ComboBoxItem Content="6 SLOTS" Tag="slots 6"/>
+            <ComboBoxItem Content="7 SLOTS" Tag="slots 7"/>
+            <ComboBoxItem Content="8 SLOTS" Tag="slots 8"/>
+            <ComboBoxItem Content="9 SLOTS" Tag="slots 9"/>
+        </ComboBox>
+        <ComboBox x:Name="ModeSwitchDelayBox" SelectionChanged="ModeSwitchDelayBox_SelectionChanged" DropDownClosed="ModeSwitchDelayBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,185,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
+            <ComboBoxItem Content="1 SECOND" Tag="mdelay 1"/>
+            <ComboBoxItem Content="2 SECONDS" Tag="mdelay 2"/>
+            <ComboBoxItem Content="3 SECONDS" Tag="mdelay 3"/>
+            <ComboBoxItem Content="4 SECONDS" Tag="mdelay 4"/>
+            <ComboBoxItem Content="5 SECONDS" Tag="mdelay 5"/>
+            <ComboBoxItem Content="6 SECONDS" Tag="mdelay 6"/>
+            <ComboBoxItem Content="7 SECONDS" Tag="mdelay 7"/>
+            <ComboBoxItem Content="8 SECONDS" Tag="mdelay 8"/>
+            <ComboBoxItem Content="9 SECONDS" Tag="mdelay 9"/>
+        </ComboBox>
+        <ComboBox x:Name="SelectedPayloadBox" SelectionChanged="SelectedPayloadBox_SelectionChanged" DropDownClosed="SelectedPayloadBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,225,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
+            <ComboBoxItem Content="0 (SINGLE MODE)" Tag="cslot 0"/>
+            <ComboBoxItem Content="1 (MULTI-MODE)" Tag="cslot 1"/>
+            <ComboBoxItem Content="2 (MULTI-MODE)" Tag="cslot 2"/>
+            <ComboBoxItem Content="3 (MULTI-MODE)" Tag="cslot 3"/>
+            <ComboBoxItem Content="4 (MULTI-MODE)" Tag="cslot 4"/>
+            <ComboBoxItem Content="5 (MULTI-MODE)" Tag="cslot 5"/>
+            <ComboBoxItem Content="6 (MULTI-MODE)" Tag="cslot 6"/>
+            <ComboBoxItem Content="7 (MULTI-MODE)" Tag="cslot 7"/>
+            <ComboBoxItem Content="8 (MULTI-MODE)" Tag="cslot 8"/>
+            <ComboBoxItem Content="9 (MULTI-MODE)" Tag="cslot 9"/>
+        </ComboBox>
+        <ComboBox x:Name="PreRCMDelayBox" SelectionChanged="PreRCMDelayBox_SelectionChanged" DropDownClosed="PreRCMDelayBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,265,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
+            <ComboBoxItem Content="1 SECOND" Tag="rdelay 1"/>
+            <ComboBoxItem Content="2 SECONDS" Tag="rdelay 2"/>
+            <ComboBoxItem Content="3 SECONDS" Tag="rdelay 3"/>
+        </ComboBox>
+        <ComboBox x:Name="DualPayloadBox" SelectionChanged="DualPayloadBox_SelectionChanged" DropDownClosed="DualPayloadBox_DropDownClosed" SelectedValuePath="Tag" Visibility="Hidden" HorizontalAlignment="Left" Margin="615,305,0,0" VerticalAlignment="Top" Width="254" Style="{StaticResource SettingsComboBoxFlatStyle}">
+            <ComboBoxItem Content="OFF" Tag="dmode 0"/>
+            <ComboBoxItem Content="ON" Tag="dmode 1"/>
+        </ComboBox>
+        <Button x:Name="BLDelayHelpButton" Visibility="Hidden" HorizontalAlignment="Left" Margin="875,105,0,0" Height="31" Width="31" VerticalAlignment="Top" Style="{StaticResource HelpButtonStyle}" Click="BLDelayHelpButton_Click" MouseEnter="BLDelayHelpButton_Click" MouseLeave="BLDelayHelpButton_MouseLeave"/>
+        <Popup x:Name="BLDelayPopup" PlacementTarget="{Binding ElementName=BLDelayHelpButton}" Placement="Bottom">
+            <StackPanel>
+                <TextBlock Text="Changes how long the DragonInjector will look for a device in RCM mode before rebooting into update mode." Foreground="LightGray" TextWrapping="Wrap" MaxWidth="500"/>
+            </StackPanel>
+        </Popup>
+        <Button x:Name="PayloadSlotsHelpButton" Visibility="Hidden" HorizontalAlignment="Left" Margin="875,145,0,0" Height="31" Width="31" VerticalAlignment="Top" Style="{StaticResource HelpButtonStyle}" Click="PayloadSlotsHelpButton_Click" MouseEnter="PayloadSlotsHelpButton_Click" MouseLeave="PayloadSlotsHelpButton_MouseLeave"/>
+        <Popup x:Name="PayloadSlotsPopup" PlacementTarget="{Binding ElementName=PayloadSlotsHelpButton}" Placement="Bottom">
+            <StackPanel>
+                <TextBlock Text="Sets the number of payload slots enabled when in multi-payload mode." Foreground="LightGray" TextWrapping="Wrap" MaxWidth="500"/>
+            </StackPanel>
+        </Popup>
+        <Button x:Name="ModeSwitchDelayHelpButton" Visibility="Hidden" HorizontalAlignment="Left" Margin="875,185,0,0" Height="31" Width="31" VerticalAlignment="Top" Style="{StaticResource HelpButtonStyle}" Click="ModeSwitchDelayHelpButton_Click" MouseEnter="ModeSwitchDelayHelpButton_Click" MouseLeave="ModeSwitchDelayHelpButton_MouseLeave"/>
+        <Popup x:Name="ModeSwitchDelayPopup" PlacementTarget="{Binding ElementName=ModeSwitchDelayHelpButton}" Placement="Bottom">
+            <StackPanel>
+                <TextBlock Text="Sets the amount of time the capacitive button ( + ) must be held down to switch between single-payload and multi-payload modes. Mode switch is indicated with a long flash of the red LED." Foreground="LightGray" TextWrapping="Wrap" MaxWidth="500"/>
+            </StackPanel>
+        </Popup>
+        <Button x:Name="SelectedPayloadHelpButton" Visibility="Hidden" HorizontalAlignment="Left" Margin="875,225,0,0" Height="31" Width="31" VerticalAlignment="Top" Style="{StaticResource HelpButtonStyle}" Click="SelectedPayloadHelpButton_Click" MouseEnter="SelectedPayloadHelpButton_Click" MouseLeave="SelectedPayloadHelpButton_MouseLeave"/>
+        <Popup x:Name="SelectedPayloadPopup" PlacementTarget="{Binding ElementName=SelectedPayloadHelpButton}" Placement="Bottom">
+            <StackPanel>
+                <TextBlock Text="Active payload slot. 0 indicates the DragonInjector is in single-payload mode, and will launch the first payload it finds in /dragonboot/ on your MicroSD card. 1-9 indicates the DragonInjector is in multi-payload mode, and will launch the first payload it finds in /dragonboot/01/ through /dragonboot/09/ respectively. This setting cannot be higher than &quot;Maximum Multi-Mode Payload Slots&quot;." Foreground="LightGray" TextWrapping="Wrap" MaxWidth="500"/>
+            </StackPanel>
+        </Popup>
+        <Button x:Name="PreRCMDelayHelpButton" Visibility="Hidden" HorizontalAlignment="Left" Margin="875,265,0,0" Height="31" Width="31" VerticalAlignment="Top" Style="{StaticResource HelpButtonStyle}" Click="PreRCMDelayHelpButton_Click" MouseEnter="PreRCMDelayHelpButton_Click" MouseLeave="PreRCMDelayHelpButton_MouseLeave"/>
+        <Popup x:Name="PreRCMDelayPopup" PlacementTarget="{Binding ElementName=PreRCMDelayHelpButton}" Placement="Bottom">
+            <StackPanel>
+                <TextBlock Text="Sets the advance interval for switching &quot;Currently Selected Payload Slot&quot; before injection. To use this feature, the DragonInjector must already be in multi-payload mode. Press and hold the capacitive button ( + ) while plugging in the DragonInjector. While the button is held, the selected payload slot will advance every time the configured delay time elapses, as indicated with the red LED. To inject the selected payload, cease holding the capacitive button." Foreground="LightGray" TextWrapping="Wrap" MaxWidth="500"/>
+            </StackPanel>
+        </Popup>
+        <Button x:Name="DualPayloadHelpButton" Visibility="Hidden" HorizontalAlignment="Left" Margin="875,305,0,0" Height="31" Width="31" VerticalAlignment="Top" Style="{StaticResource HelpButtonStyle}" Click="DualPayloadHelpButton_Click" MouseEnter="DualPayloadHelpButton_Click" MouseLeave="DualPayloadHelpButton_MouseLeave"/>
+            <Popup x:Name="DualPayloadPopup" PlacementTarget="{Binding ElementName=DualPayloadHelpButton}" Placement="Bottom">
+                <StackPanel>
+                    <TextBlock Text="When set to enabled, the DragonInjector will always launch the first payload it finds in /dragonboot/01/ unless the capacitive button ( + ) is held down while plugging in the DragonInjector, in which case the first payload in /dragonboot/02/ will be launched. In this mode, &quot;Maximum Multi-Mode Payload Slots&quot;, &quot;Single/Multi-Mode Switch Delay&quot;, &quot;Currently Selected Payload Slot&quot; and &quot;Pre-RCM Selection Delay&quot; will have no effect." Foreground="LightGray" TextWrapping="Wrap" MaxWidth="500"/>
+                </StackPanel>
+            </Popup>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="100" Margin="1193,223,-374,0" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </Window>
