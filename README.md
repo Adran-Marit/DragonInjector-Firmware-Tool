@@ -14,6 +14,13 @@ This tool is for use with the DragonInjector payload injector.
 5) Select your DragonInjector from the dropdown menu in the Firmware Tool
 6) From here you can update bootloader and firmware to the latest version by pressing flash firmware or update bootloader.
 
+# Settings Usage
+1) Click the gear.
+2) Choose your COM port.
+3) Select a setting. After clicking a setting it will immediately commit it.
+4) For backing up and restoring, use the save/load features.
+5) To reset to factory state, select the default option.
+
 #### Advanced Usage
 If you don't want the default firmware you can load a custom uf2 firmware by selecting it above the DragonInjector and then flashing it.
 To return to the default firmware, press the X next to UF2 selection, then press flash firmware.
