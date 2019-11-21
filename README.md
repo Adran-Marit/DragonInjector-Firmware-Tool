@@ -21,7 +21,7 @@ This tool is for use with the DragonInjector payload injector.
 4) For backing up and restoring, use the save/load features.
 5) To reset to factory state, select the default option.
 
-#### Advanced Usage
+# Advanced Usage
 If you don't want the default firmware you can load a custom uf2 firmware by selecting it above the DragonInjector and then flashing it.
 To return to the default firmware, press the X next to UF2 selection, then press flash firmware.
 
