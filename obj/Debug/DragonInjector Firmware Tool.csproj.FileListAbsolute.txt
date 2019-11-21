@@ -1,0 +1,19 @@
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\bin\Debug\DragonInjector Firmware Tool.exe.config
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\bin\Debug\DragonInjector Firmware Tool.exe
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\bin\Debug\DragonInjector Firmware Tool.pdb
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\bin\Debug\Newtonsoft.Json.dll
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\bin\Debug\Octokit.dll
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\bin\Debug\Newtonsoft.Json.xml
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\bin\Debug\Octokit.xml
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\obj\Debug\MainWindow.baml
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\obj\Debug\MainWindow.g.cs
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\obj\Debug\App.g.cs
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\obj\Debug\DragonInjector Firmware Tool_MarkupCompile.cache
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\obj\Debug\DragonInjector Firmware Tool.g.resources
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\obj\Debug\DragonInjector_Firmware_Tool.Properties.Resources.resources
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\obj\Debug\DragonInjector Firmware Tool.csproj.GenerateResource.cache
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\obj\Debug\DragonInjector Firmware Tool.csproj.CoreCompileInputs.cache
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\obj\Debug\DragonInjector Firmware Tool.csproj.CopyComplete
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\obj\Debug\DragonInjector Firmware Tool.exe
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\obj\Debug\DragonInjector Firmware Tool.pdb
+D:\Switch\DragonInjector\Firmware Tool Branches\Branches\C# Branch\DragonInjector Firmware Tool\obj\Debug\DragonInjector Firmware Tool.csprojAssemblyReference.cache
