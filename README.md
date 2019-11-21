@@ -1,4 +1,6 @@
 # DragonInjector Firmware Tool
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://choosealicense.com/licenses/mit/)
+<a href="https://discord.gg/ez2HCgK"><img src="https://discordapp.com/api/guilds/488214231540301826/embed.png" alt="Discord Server" /></a>
 
 This tool is for use with the DragonInjector payload injector.
 <br><br><br>
